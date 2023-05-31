@@ -4,6 +4,7 @@ import Box from "@mui/material/Box";
 import Menu from "../components/Homepage/Menu"
 
 function Interface(props) {
+    
     return (
         <Box>
             <Menu/>

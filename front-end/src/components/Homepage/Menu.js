@@ -1,34 +1,67 @@
-import React from 'react';
-import { Button, Box, AppBar, Toolbar, Typography } from '@mui/material';
-import { teal } from '@mui/material/colors';
+import React, {useState} from 'react';
+import { Button, Box, Paper, Toolbar, Typography, TextField, Grid} from '@mui/material';
+import Image from 'mui-image'
 
 const logoEnt = new URL("../../images/Logo.png", import.meta.url)
-function Connect() {
+
+function Menu() {
+
+    const [isConnected, setIsConnected] = useState(false)
+    const [userName, setUserName] = useState("")
+    const [pwd, setPwd] = useState("")
+    const handleClick = () => {setIsConnected(!isConnected)}
+
     return (
 
         <Box sx={
             {
-                marginLeft: -0.8,
-                width: 1262,
-                marginTop: -1,
-                backgroundColor: teal["200"]
+                width: "100%",
             }
         }>
 
-            <AppBar position='static' color='transparent'>
+
+            <Paper elevation={4}>
 
                 <Toolbar>
 
-                    <img src={logoEnt} alt='logo' width={150} ></img>
-                    <Typography className='accueil' component="div" sx={{ flexGrow: 1 }} variant="h6">Accueil</Typography>
-                    <Button className='btnConnect' color='inherit'>Connexion</Button>
+                <Grid container spacing={2} sx={{margin: 1}}>
+                
+                    <Grid xs={5} >
+                    
+                        <Image src={logoEnt} alt='logo' width={90}/>
+
+                    </Grid>
+
+                        {isConnected && (
+
+                            <Grid xs={5}>
+                                <Typography variant="h6">Bonjour Madame/Monsieur</Typography>
+                            </Grid>
+                        )}
+                        {!isConnected && (
+                            <Box>
+                                <Grid container>
+                                    <Grid item xs={5}>
+                                    <TextField required label="Nom d'utilisateur" variant="outlined" onChange={e => setUserName(e.target.value)} value={userName}/>
+                                    </Grid>
+                                    <Grid item xs={5}>
+                                    <TextField required label="Mot de passe" variant="outlined" onChange={e => setPwd(e.target.value)}  value={pwd}/>  
+                                    </Grid>
+                                </Grid>
+                            </Box>
+                        )}
+
+                        <Grid xs={2}>
+                            <Button className='btnConnect' color='inherit' onClick={handleClick}>{isConnected ? "Déconnexion":"Connexion"}</Button>
+                        </Grid>
+                    </Grid>
 
                 </Toolbar>
 
-            </AppBar>
+            </Paper>
         
         </Box>
 
     )
 }
-export default Connect;
+export default Menu;
