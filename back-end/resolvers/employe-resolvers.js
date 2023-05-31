@@ -26,7 +26,16 @@ const employesResolvers = {
         },
         deleteEmploye: async (parent, {id}, context, info) => {
             await database("employe").where("id", id).delete()
+            console.log("Employé #" + id + " a bien été supprimé." )
             return "Employe Deleted"
+        },
+        deleteEmployes: async (parent, {ids}, context, info) => {
+            console.log(ids)
+            for (const id in ids) {
+                await database("employe").where("id", ids[id]).delete()
+                console.log("Employé #" + ids[id] + " a bien été supprimé." )
+            }
+            return "Employes Deleted"
         },
         updateEmploye: async (parent, args, context, info) => {
             const id = args.id
