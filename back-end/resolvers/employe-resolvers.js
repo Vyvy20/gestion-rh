@@ -21,6 +21,10 @@ const employesResolvers = {
                 salaire: salaire
             })
             return "Employe Created"
+        },
+        deleteEmploye: async (parent, {id}, context, info) => {
+            const result = await database("employe").where("id", id).delete()
+            return "Employe Deleted"
         }
     }
 };
