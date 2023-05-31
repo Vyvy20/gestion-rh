@@ -6,6 +6,6 @@ const absencesResolvers = {
             }
         }
     },
- };
+};
 
 export default absencesResolvers;

@@ -1,4 +1,6 @@
-import { ApolloServer } from 'apollo-server';
+import {
+    ApolloServer
+} from 'apollo-server';
 import absencesSchemas from './schemas/absence-schemas.js';
 import absencesResolvers from './resolvers/absence-resolvers.js'
 
@@ -10,7 +12,12 @@ const RESOLVERS = [
     absencesResolvers,
 ]
 
-const server = new ApolloServer({ typeDefs: SCHEMAS, resolvers: RESOLVERS });
-server.listen().then(({ url }) => {
+const server = new ApolloServer({
+    typeDefs: SCHEMAS,
+    resolvers: RESOLVERS
+});
+server.listen().then(({
+    url
+}) => {
     console.log(`🚀  Server ready at ${url}`);
 });

@@ -1,6 +1,8 @@
-import { gql } from 'apollo-server';
+import {
+    gql
+} from 'apollo-server';
 
-const absencesSchemas = gql`
+const absencesSchemas = gql `
     type Query {
         getAbsence(id: Int!): Absence 
     }
