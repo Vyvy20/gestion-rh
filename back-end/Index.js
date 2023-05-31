@@ -5,7 +5,7 @@ import absencesSchemas from './schemas/absence-schemas.js';
 import employesSchemas from './schemas/employe-schemas.js';
 import absencesResolvers from './resolvers/absence-resolvers.js';
 import employesResolvers from './resolvers/employe-resolvers.js';
-
+    
 const SCHEMAS = [
     employesSchemas,
     absencesSchemas,

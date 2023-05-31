@@ -3,13 +3,19 @@ import {
 } from 'apollo-server';
 
 const employeSchemas = gql `
-    type Query {
+    extend type Query {
         getEmploye(id: Int!): Employe
         getEmployes: [Employe] 
     }
 
     type Employe {
         id: Int!
+        nom: String!
+        prenom: String!
+        email: String!
+        telephone: String
+        poste: String
+        salaire: Int
     }
 `;
 

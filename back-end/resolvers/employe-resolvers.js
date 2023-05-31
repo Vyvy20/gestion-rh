@@ -1,16 +1,12 @@
+import { database } from "../connection.js";
+
 const employesResolvers = {
     Query: {
         getEmploye: (parent, args, context, info) => {
-            return {
-                "id": args.id
-            }
+            return []
         },
-        getEmployes: (parent, args, context, info) => {
-            return [
-                {
-                    "id": 1
-                }
-            ]
+        getEmployes: async (parent, args, context, info) => {
+            return await database.select().from('employe');
         }
     },
 };
