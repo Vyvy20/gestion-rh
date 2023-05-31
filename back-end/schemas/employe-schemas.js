@@ -4,8 +4,8 @@ import {
 
 const employeSchemas = gql `
     extend type Query {
-        getEmploye(id: Int!): Employe
-        getEmployes: [Employe] 
+        getEmploye(id: Int!): Employe!
+        getEmployes: [Employe!] 
     }
 
     type Employe {

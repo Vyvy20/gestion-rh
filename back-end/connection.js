@@ -1,8 +1,6 @@
 import config from "./config/config.json" assert { type: 'json' };
 import knex from "knex";
 
-console.log(config)
-
 const databaseConf = config.database
 
 const database = knex({
