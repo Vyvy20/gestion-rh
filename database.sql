@@ -9,5 +9,6 @@ CREATE TABLE Employe (
     email varchar(255) NOT NULL,
     telephone varchar(255),
     poste varchar(255),
-    salaire int
+    salaire int,
+    password varchar(255) NOT NULL
 );

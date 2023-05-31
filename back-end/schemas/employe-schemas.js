@@ -9,8 +9,10 @@ const employeSchemas = gql `
     }
     
     type Mutation {
-        addEmploye(prenom: String!, nom: String!, email: String!, telephone: String, poste: String, salaire: Int): String!
+        addEmploye(prenom: String!, nom: String!, email: String!, telephone: String, poste: String, salaire: Int, password: String!): String!
         deleteEmploye(id: Int!): String!
+        updateEmploye(id: Int!, prenom: String, nom: String, email: String, telephone: String, poste: String, salaire: Int): String!
+        changePassword(id: Int!, currentPassword: String!, newPassword: String!): String!
     }
 
     type Employe {
