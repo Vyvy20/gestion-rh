@@ -7,6 +7,10 @@ const employeSchemas = gql `
         getEmploye(id: Int!): Employe!
         getEmployes: [Employe!] 
     }
+    
+    type Mutation {
+        addEmploye(prenom: String!, nom: String!, email: String!, telephone: String, poste: String, salaire: Int): String
+    }
 
     type Employe {
         id: Int!
