@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
-import { rows as initialRows } from './rows';
+import { rows } from './rows';
 import Button from '@mui/material/Button';
 import { Box } from '@mui/material';
 
 export default function Table() {
-  const [rows, setRows] = useState(initialRows);
+  const [selectedRows, setSelectedRows] = useState([]);
 
   const handleClickAdd = () => {
     alert("Button ajout d'utilisateur");
   };
+
+  const handleClickeDelete = () => {
+  console.log("les id : ",selectedRows);
+ };
 
   const handleClickEdit = (userId) => {
     alert("Modifier l'utilisateur avec l'ID : " + userId);
@@ -75,10 +79,7 @@ export default function Table() {
         <Button variant="contained" color="primary" onClick={handleClickAdd}>
           + Ajouter
         </Button>
-        <Button
-          variant="contained"
-          color="secondary"
-        >
+        <Button variant="contained" color="secondary" onClick={handleClickeDelete}>
           - Supprimer sélectionnés
         </Button>
       </Box>
@@ -86,7 +87,7 @@ export default function Table() {
         rows={rows}
         columns={columns}
         checkboxSelection
-        onSelectionModelChange={handleCheckboxChange}
+        onRowSelectionModelChange={itm => setSelectedRows(itm)}
         initialState={{
           pagination: {
             paginationModel: { page: 0, pageSize: 5 },
