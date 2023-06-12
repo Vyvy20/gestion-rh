@@ -13,7 +13,7 @@ const employesResolvers = {
     },
     Mutation: {
         addEmploye: async (parent, {prenom, nom, email, telephone, poste, salaire, password}, context, info) => {
-            const result = await database("employe").insert({
+            await database("employe").insert({
                 nom: nom,
                 prenom: prenom, 
                 email: email,

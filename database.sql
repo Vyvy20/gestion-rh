@@ -12,3 +12,11 @@ CREATE TABLE Employe (
     salaire int,
     password varchar(255) NOT NULL
 );
+
+CREATE TABLE Absence (
+    id Int auto_increment PRIMARY KEY NOT NULL,
+    employe_id INT NOT NULL,
+    date_debut date NOT NULL,
+    date_fin date NOT NULL,
+    valide boolean NOT NULL DEFAULT FALSE
+);
