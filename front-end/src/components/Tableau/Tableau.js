@@ -12,26 +12,50 @@ export default function Tableau() {
   };
 
   const handleClickeDelete = () => {
-    console.log('les id : ', selectedRows);
+    if (selectedRows && selectedRows.length > 0) {
+      console.log('Lignes sélectionnées: ', selectedRows);
+      selectedRows.forEach((userId) => handleDeleteClick(userId));
+    } else {
+      console.log('Aucune ligne sélectionnée');
+    }
   };
 
   const handleClickEdit = (userId) => {
     alert("Modifier l'utilisateur avec l'ID : " + userId);
   };
 
-  const Edit = (params) => {
+  const handleDeleteClick = (userId) => {
+    alert("Supprimer l'utilisateur avec l'ID : " + userId);
+  };
+
+  const EditButton = (params) => {
     const userId = params.row.id;
 
-    const handleEditClick = () => {
+    const handleEditClick = (e) => {
+      console.log(userId);
+      e.stopPropagation();
       handleClickEdit(userId);
     };
 
     return (
-      <strong>
-        <Button variant="contained" onClick={handleEditClick}>
-          Edit
-        </Button>
-      </strong>
+      <Button variant="contained" onClick={handleEditClick}>
+        Edit
+      </Button>
+    );
+  };
+
+  const DeleteButton = (params) => {
+    const userId = params.row.id;
+
+    const handleDeleteRowClick = (e) => {
+      e.stopPropagation();
+      handleDeleteClick(userId);
+    };
+
+    return (
+      <Button variant="contained" onClick={handleDeleteRowClick}>
+        Delete
+      </Button>
     );
   };
 
@@ -70,7 +94,22 @@ export default function Tableau() {
       valueGetter: (params) =>
         `${params.row.firstName || ''} ${params.row.lastName || ''}`,
     },
-    { field: 'edit', headerName: 'Edit', renderCell: Edit },
+    {
+      field: 'edit',
+      headerName: 'Edit',
+      sortable: false,
+      width: 100,
+      disableClickEventBubbling: true,
+      renderCell: (params) => <EditButton {...params} />,
+    },
+    {
+      field: 'delete',
+      headerName: 'Delete',
+      sortable: false,
+      width: 100,
+      disableClickEventBubbling: true,
+      renderCell: (params) => <DeleteButton {...params} />,
+    },
   ];
 
   return (
@@ -91,7 +130,9 @@ export default function Tableau() {
         rows={rows}
         columns={columns}
         checkboxSelection
-        onRowSelectionModelChange={(itm) => setSelectedRows(itm)}
+        onRowSelectionModelChange={(newSelection) => {
+          setSelectedRows(newSelection);
+        }}
         initialState={{
           pagination: {
             paginationModel: { page: 0, pageSize: 5 },
