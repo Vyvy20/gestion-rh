@@ -20,8 +20,10 @@ const absencesResolvers = {
             const absence = {
                 "employe_id": employe_id,
                 "date_debut": date_debut,
-                "date_fin": date_fin
+                "date_fin": date_fin,
+                "duree": 1 + ((date_fin - date_debut)/86400000)
             }
+
             await database("absence").insert(absence);
             return "Absence Created"
         }

@@ -21,6 +21,7 @@ const absencesSchemas = gql `
         date_debut: Date!
         date_fin: Date!
         valide: Boolean
+        duree: Int!
     }
 `;
 
