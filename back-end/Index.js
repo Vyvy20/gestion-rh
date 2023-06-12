@@ -40,11 +40,24 @@ const SCHEMAS = [
     absencesSchemas,
 ];
 
-const RESOLVERS = {
+
+
+let RESOLVERS = {
     Date: dateScalar,
     ...employesResolvers,
-    ...absencesResolvers,
 }
+
+RESOLVERS.Query = {
+  ...RESOLVERS.Query,
+  ...absencesResolvers.Query
+}
+
+RESOLVERS.Mutation = {
+  ...RESOLVERS.Mutation,
+  ...absencesResolvers.Mutation
+}
+
+console.log(RESOLVERS)
 
 const server = new ApolloServer({
     typeDefs: SCHEMAS,
