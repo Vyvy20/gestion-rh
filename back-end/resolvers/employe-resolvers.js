@@ -12,25 +12,25 @@ const employesResolvers = {
         }
     },
     Mutation: {
-        addEmploye: async (parent, {prenom, nom, email, telephone, poste, salaire, password}, context, info) => {
+        addEmploye: async (parent, {prenom, nom, email, telephone, poste, salaire, password, jours}, context, info) => {
             await database("employe").insert({
                 nom: nom,
-                prenom: prenom, 
+                prenom: prenom,
                 email: email,
                 telephone: telephone,
                 poste: poste,
                 salaire: salaire,
-                password: sha256(password)
+                password: sha256(password),
+                jours: jours
             })
             return "Employe Created"
         },
         deleteEmploye: async (parent, {id}, context, info) => {
             await database("employe").where("id", id).delete()
-            console.log("Employé #" + id + " a bien été supprimé." )
+            console.log("Employé #" + id + " a bien été supprimé.")
             return "Employe Deleted"
         },
         deleteEmployes: async (parent, {ids}, context, info) => {
-            console.log(ids)
             for (const id in ids) {
                 await database("employe").where("id", ids[id]).delete()
                 console.log("Employé #" + ids[id] + " a bien été supprimé." )
@@ -53,6 +53,26 @@ const employesResolvers = {
                 return "Current Password is incorrect"
             }
         }
+    },
+    Employe: {
+        joursRestant: async (parent, { args }, context, info) => {
+            const results = await database.select("duree").from("absence").where("employe_id", parent.id)
+            let duree = 0;
+            results.forEach(result => {
+                duree += result.duree
+            });
+
+            return parent.jours - duree
+        },
+        joursPrit: async (parent, { args }, context, info) => {
+            const results = await database.select("duree").from("absence").where("employe_id", parent.id)
+            let duree = 0;
+            results.forEach(result => {
+                duree += result.duree
+            });
+
+            return duree
+        },
     }
 };
 

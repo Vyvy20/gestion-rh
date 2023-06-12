@@ -10,7 +10,8 @@ CREATE TABLE Employe (
     telephone varchar(255),
     poste varchar(255),
     salaire int,
-    password varchar(255) NOT NULL
+    password varchar(255) NOT NULL,
+    jours int not null
 );
 
 CREATE TABLE Absence (
