@@ -1,4 +1,4 @@
-import { database } from "../connection.js";
+import { database } from "../database.js";
 import sha256 from "js-sha256"
 
 const employesResolvers = {

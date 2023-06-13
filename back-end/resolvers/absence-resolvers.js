@@ -1,4 +1,4 @@
-import { database } from "../connection.js";
+import { database } from "../database.js";
 
 const absencesResolvers = {
     Query: {

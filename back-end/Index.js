@@ -1,11 +1,14 @@
-import {
-    ApolloServer
-} from 'apollo-server';
+import { ApolloServer } from '@apollo/server';
+import { startStandaloneServer } from '@apollo/server/standalone';
 import absencesSchemas from './schemas/absence-schemas.js';
 import employesSchemas from './schemas/employe-schemas.js';
+import userSchemas from './schemas/user-schemas.js'
 import absencesResolvers from './resolvers/absence-resolvers.js';
 import employesResolvers from './resolvers/employe-resolvers.js';
+import userResolvers from './resolvers/user-resolvers.js';
 import { GraphQLScalarType, Kind } from 'graphql';
+import getUser from "./connection.js";
+
 
 const dateScalar = new GraphQLScalarType({
   name: 'Date',
@@ -38,6 +41,7 @@ const dateScalar = new GraphQLScalarType({
 const SCHEMAS = [
     employesSchemas,
     absencesSchemas,
+	userSchemas
 ];
 
 
@@ -54,7 +58,8 @@ RESOLVERS.Query = {
 
 RESOLVERS.Mutation = {
   ...RESOLVERS.Mutation,
-  ...absencesResolvers.Mutation
+  ...absencesResolvers.Mutation,
+  ...userResolvers.Mutation
 }
 
 console.log(RESOLVERS)
@@ -63,8 +68,17 @@ const server = new ApolloServer({
     typeDefs: SCHEMAS,
     resolvers: RESOLVERS
 });
-server.listen().then(({
-    url
-}) => {
-    console.log(`🚀  Server ready at ${url}`);
+const { url } = await startStandaloneServer(server, {
+    context: async ({ req, res }) => {
+        const token = req.headers.authorization || '';
+
+        // Try to retrieve a user with the token
+        const user = await getUser(token);
+
+        // Add the user to the context
+        return { user };
+  },
 });
+
+
+console.log(`🚀 Server listening at: ${url}`);

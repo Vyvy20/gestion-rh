@@ -20,5 +20,12 @@ CREATE TABLE Absence (
     date_debut date NOT NULL,
     date_fin date NOT NULL,
     duree INT NOT NULL,
-    valide boolean NOT NULL DEFAULT FALSE
+    valide boolean NOT NULL DEFAULT FALSE,
+    FOREIGN KEY (employe_id) REFERENCES Employe (id)
+);
+
+CREATE TABLE Token (
+    employe_id INT NOT NULL,
+    token varchar(255) NOT NUll,
+    FOREIGN KEY (employe_id) REFERENCES Employe (id)
 );
