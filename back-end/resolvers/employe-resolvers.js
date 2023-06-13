@@ -22,6 +22,15 @@ const employesResolvers = {
             if (!user || user.role != "rh") {
                 return null
             }
+            const emailRegex = new RegExp(/^[A-Za-z0-9_!#$%&'*+\/=?`{|}~^.-]+@[A-Za-z0-9.-]+$/, "gm");
+            if (!emailRegex.test(email)) {
+                throw new Error("email format incorect");
+            }
+
+            const result = await database.select().from("employe").where("email", email)
+            if(result.length > 0) {
+                throw new Error("email already taken");
+            }
 
             await database("employe").insert({
                 nom: nom,
