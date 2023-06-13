@@ -4,11 +4,12 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
-//Table
+//Fonction pour créer une donnée test
 function createData(startDateDonn, endDateDonn, type, status, action) {
   return { startDateDonn, endDateDonn, type, status, action };
 }
 
+//Créer une donnée test
 const rows = [
   createData('12/05/2023', '19/05/2023', 'Congé payé', 'Validé', <Box><Button color='inherit' variant="outlined">Modifier</Button> <Button color='inherit' variant="outlined">Supprimer</Button></Box>),
 ];
@@ -23,6 +24,66 @@ const typeHol = [
     value: "unpaidLeave",
     label: "Congé sans solde"
   },
+  {
+    value: "reducWorkTime",
+    label: "RTT"
+  },
+  {
+    value: "sickLeave",
+    label: "Arrêt maladie"
+  },
+  {
+    value: "materPaterLeave",
+    label: "Congé maternité/paternité"
+  },
+  {
+    value: "adoptLeave",
+    label: "Congé d'adoption"
+  },
+  {
+    value: "familyEventLeave",
+    label: "Congé pour évènements familiaux"
+  },
+  {
+    value: "sickChildLeave",
+    label: "Congé pour enfant malade"
+  },
+  {
+    value: "parentPresLeave",
+    label: "Congé de présence parentale"
+  },
+  {
+    value: "parentEducLeave",
+    label: "Congé parental d’éducation"
+  },
+  {
+    value: "IndTrainLeave",
+    label: "CIF"
+  },
+  {
+    value: "IndRightTrain",
+    label: "DIF"
+  },
+  {
+    value: "BusinessStartUpLeave",
+    label: "Congé création d’entreprise"
+  },
+  {
+    value: "sabbatical",
+    label: "Congé sabbatique"
+  },
+  {
+    value: "familySolidaLeave",
+    label: "Congé de solidarité familiale"
+  },
+  {
+    value: "familySuppLeave",
+    label: "Congé de soutien familial"
+  },
+  {
+    value: "testReviewTraineeLeave",
+    label: "congé de révision d'un examen (apprenti)"
+  }
 ];
 
 function Profil() {
@@ -68,7 +129,7 @@ function Profil() {
                 <Grid container>
                   <Grid item xs={3}>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <DatePicker required label="Date de début"/>
+                      <DatePicker className='lblstartEnd' required label="Date de début"/>
                     </LocalizationProvider>
                   </Grid>
                   <Grid item xs={3}>
