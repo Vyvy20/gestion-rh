@@ -2,21 +2,34 @@ import { database } from "../database.js";
 
 const absencesResolvers = {
     Query: {
-        getAbsence: async (parent, { id }, context, info) => {
+        getAbsence: async (parent, { id }, { user }, info) => {
             const absence = await database.select().from("absence").where("id", id)
+
+            if (!user || (user.id != absence[0].employe_id && user.role != "rh")) {
+                return null
+            }
             return absence[0]
         },
-        getAbsences: async (parent, args, context, info) => {
+        getAbsences: async (parent, args, { user }, info) => {
+            if (!user || user.role != "rh") {
+                return null
+            }
             return await database.select().from('absence');
         }
     },
     Mutation: {
         validate: async (parent, { id }, context, info) => {
+            if (!user || user.role != "rh") {
+                return null
+            }
             const absence = await database.select().from("absence").where("id", id)
             await database("absence").where("id", id).update("valide", absence[0].valide ? 0 : 1)
             return "Validation state have been updated successfully"
         },
         addAbsence: async (parent, { employe_id, date_debut, date_fin }, context, info) => {
+            if (!user || user.id != employe_id) {
+                return null
+            }
             const absence = {
                 "employe_id": employe_id,
                 "date_debut": date_debut,

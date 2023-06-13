@@ -8,14 +8,13 @@ function generateToken(email) {
 const userResolvers = {
     Mutation: {
         connect: async (parent, { email, password }, { user }, info) => {
-            // if user connected, return his token
+            // if user connected, delete his token and create an other
             if (user) {
                 console.log("User already connected")
-                const token =  await database.select("token").from("token").where("employe_id", user.id)
-                return token[0].token
+                await database("token").where("employe_id", user.id).delete()
             }
             // if not connected, give a new token
-            const result = await database.select("password", "id").from("employe").where("email", email)
+            const result = await database.select("password", "id", "role").from("employe").where("email", email)
             // delete already existing token that might have been lost
             // prevent from connecting on multiple device
             await database("token").where("employe_id", result[0].id).delete()
@@ -25,7 +24,7 @@ const userResolvers = {
                     employe_id: result[0].id,
                     token: token
                 })
-                return token
+                return { token: token, role: result[0].role }
             }
             else {
                 return null

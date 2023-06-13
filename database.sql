@@ -11,7 +11,8 @@ CREATE TABLE Employe (
     poste varchar(255),
     salaire int,
     password varchar(255) NOT NULL,
-    jours int not null
+    jours int not null,
+    role varchar(255) NOT NULL
 );
 
 CREATE TABLE Absence (
@@ -29,3 +30,5 @@ CREATE TABLE Token (
     token varchar(255) NOT NUll,
     FOREIGN KEY (employe_id) REFERENCES Employe (id)
 );
+
+INSERT INTO `employe` (`id`, `nom`, `prenom`, `email`, `telephone`, `poste`, `salaire`, `password`, `jours`, `role`) VALUES (NULL, 'admin', 'admin', 'admin', NULL, NULL, NULL, '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918', '30', 'rh');

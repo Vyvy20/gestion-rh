@@ -2,7 +2,6 @@ import { database } from "./database.js";
 
 export default async function getUser(token) {
     const user_id = await database.select("employe_id").from("token").where("token", token);
-    console.log(user_id);
     if(user_id.length === 0) {
         return null
     }
