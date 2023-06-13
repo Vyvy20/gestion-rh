@@ -1,8 +1,4 @@
-import {
-    gql
-} from 'apollo-server';
-
-const userSchemas = gql `
+const userSchemas = `#graphql
     type Mutation {
         connect(email: String!, password: String!): Token
         disconnect: String

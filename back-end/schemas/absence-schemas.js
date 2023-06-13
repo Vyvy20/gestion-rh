@@ -1,8 +1,4 @@
-import {
-    gql
-} from 'apollo-server';
-
-const absencesSchemas = gql `
+const absencesSchemas = `#graphql
     scalar Date
 
     type Query {

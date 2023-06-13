@@ -1,8 +1,4 @@
-import {
-    gql
-} from 'apollo-server';
-
-const employeSchemas = gql `
+const employeSchemas = `#graphql
     extend type Query {
         getEmploye(id: Int!): Employe
         getEmployes: [Employe] 
