@@ -1,5 +1,5 @@
-import React from 'react';
-import {Box, Button, TextField, Typography, Table, TableBody, TableCell, TableContainer, TableRow, TableHead, Grid, MenuItem} from '@mui/material';
+import React, {useState} from 'react';
+import {Box, Button, TextField, Typography, Table, TableBody, TableCell, TableContainer, TableRow, TableHead, Grid} from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -8,85 +8,23 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 function createData(startDateDonn, endDateDonn, type, status, action) {
   return { startDateDonn, endDateDonn, type, status, action };
 }
+function createData2(paystub, action2) {
+  return { paystub, action2};
+}
 
 //Créer une donnée test
 const rows = [
   createData('12/05/2023', '19/05/2023', 'Congé payé', 'Validé', <Box><Button color='inherit' variant="outlined">Modifier</Button> <Button color='inherit' variant="outlined">Supprimer</Button></Box>),
 ];
 
-//Type de vacances
-const typeHol = [
-  {
-    value: "paidLeave",
-    label: "Congé payé"
-  },
-  {
-    value: "unpaidLeave",
-    label: "Congé sans solde"
-  },
-  {
-    value: "reducWorkTime",
-    label: "RTT"
-  },
-  {
-    value: "sickLeave",
-    label: "Arrêt maladie"
-  },
-  {
-    value: "materPaterLeave",
-    label: "Congé maternité/paternité"
-  },
-  {
-    value: "adoptLeave",
-    label: "Congé d'adoption"
-  },
-  {
-    value: "familyEventLeave",
-    label: "Congé pour évènements familiaux"
-  },
-  {
-    value: "sickChildLeave",
-    label: "Congé pour enfant malade"
-  },
-  {
-    value: "parentPresLeave",
-    label: "Congé de présence parentale"
-  },
-  {
-    value: "parentEducLeave",
-    label: "Congé parental d’éducation"
-  },
-  {
-    value: "IndTrainLeave",
-    label: "CIF"
-  },
-  {
-    value: "IndRightTrain",
-    label: "DIF"
-  },
-  {
-    value: "BusinessStartUpLeave",
-    label: "Congé création d’entreprise"
-  },
-  {
-    value: "sabbatical",
-    label: "Congé sabbatique"
-  },
-  {
-    value: "familySolidaLeave",
-    label: "Congé de solidarité familiale"
-  },
-  {
-    value: "familySuppLeave",
-    label: "Congé de soutien familial"
-  },
-  {
-    value: "testReviewTraineeLeave",
-    label: "congé de révision d'un examen (apprenti)"
-  }
-];
-
 function Profil() {
+
+  const fiche2 = new URL("../../images/Fiche_paie_janvier.jpg", import.meta.url)
+  const [fiche, setFiche] = useState(new URL(fiche2, import.meta.url))
+  const handleClick = () => {setFiche(new URL("http://localhost:3000/app/home", import.meta.url))}
+  const rows2 = [
+    createData2("fiche_paie_janvier_2023", <Box><Button color='inherit' variant="outlined" onClick={handleClick} href={fiche ? fiche2:!fiche2}>Voir</Button></Box>),
+  ];
 
   return(
         <Box>
@@ -129,7 +67,7 @@ function Profil() {
                 <Grid container>
                   <Grid item xs={3}>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <DatePicker className='lblstartEnd' required label="Date de début"/>
+                      <DatePicker required label="Date de début"/>
                     </LocalizationProvider>
                   </Grid>
                   <Grid item xs={3}>
@@ -137,22 +75,31 @@ function Profil() {
                       <DatePicker required label="Date de fin"/>
                     </LocalizationProvider>
                   </Grid>
-                  <Grid item xs={2}>
-                    <TextField required select label="Type de congé" variant="outlined">
-                      {typeHol.map((option) => (
-                        <MenuItem key={option.value} value={option.value}>
-                          {option.label}
-                        </MenuItem>
-                      ))}
-                    </TextField>
-                  </Grid>
-                  <Grid item xs={3}>
-                    <Button color='inherit' variant="outlined">Ajouter</Button>
-                  </Grid>
                 </Grid>        
             </Box>
             <Box>
-                <Typography variant='h3'>Ma fiche de paie</Typography>
+                <Typography variant='h3'>Mes fiches de paie</Typography>
+                <TableContainer>
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell align="left">Fiche de paie</TableCell>
+                        <TableCell align="left">Action</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {rows2.map((row2) => (
+                          <TableRow
+                            key={row2.paystub}
+                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                          >
+                          <TableCell component="th" scope="row">{row2.paystub}</TableCell>
+                          <TableCell align="left">{row2.action2}</TableCell>
+                        </TableRow>
+                        ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
             </Box>
         </Box>
     )
