@@ -1,14 +1,47 @@
 import React, { useState } from 'react';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
-import { rows } from './row';
+import { useQuery } from '@apollo/client';
 import Button from '@mui/material/Button';
 import { Box } from '@mui/material';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogActions from '@mui/material/DialogActions';
+import { GET_EMPLOYES } from '../../api/tableauApi';
+
+const config = {
+  headers: {
+    authorization: `Bearer ${localStorage.getItem('token')}`,
+  },
+};
 
 export default function Tableau() {
   const [selectedRows, setSelectedRows] = useState([]);
+  const [prenom, setPrenom] = useState('');
+  const [nom, setNom] = useState('');
+  const [email, setEmail] = useState('');
+  const [telephone, setTelephone] = useState('');
+  const [poste, setPoste] = useState('');
+  const [salaire, setSalaire] = useState('');
+  const [password, setPassword] = useState('');
+  const [jours, setJours] = useState('');
+  const [open, setOpen] = useState(false);
+
+  const { loading, error, data } = useQuery(GET_EMPLOYES, config);
+
+  if (loading) return <p>Chargement...</p>;
+  if (error) return <p>Erreur :</p>;
+
+  console.log(data);
+  const employes = data.getEmployes;
 
   const handleClickAdd = () => {
-    alert("Button ajout d'utilisateur");
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   const handleClickeDelete = () => {
@@ -61,39 +94,15 @@ export default function Tableau() {
 
   const columns = [
     { field: 'id', headerName: 'ID', width: 70 },
-    { field: 'firstName', headerName: 'First name', width: 130 },
-    { field: 'lastName', headerName: 'Last name', width: 130 },
-    {
-      field: 'email',
-      headerName: 'Email',
-      width: 230,
-    },
-    {
-      field: 'telephone',
-      headerName: 'Téléphone',
-      type: 'number',
-      width: 150,
-    },
-    {
-      field: 'poste',
-      headerName: 'Poste',
-      width: 190,
-    },
-    {
-      field: 'salaire',
-      headerName: 'Salaire',
-      type: 'number',
-      width: 90,
-    },
-    {
-      field: 'fullName',
-      headerName: 'Full name',
-      description: 'This column has a value getter and is not sortable.',
-      sortable: false,
-      width: 160,
-      valueGetter: (params) =>
-        `${params.row.firstName || ''} ${params.row.lastName || ''}`,
-    },
+    { field: 'nom', headerName: 'Nom', width: 130 },
+    { field: 'prenom', headerName: 'Prénom', width: 130 },
+    { field: 'email', headerName: 'Email', width: 130 },
+    { field: 'telephone', headerName: 'Téléphone', width: 130 },
+    { field: 'poste', headerName: 'Poste', width: 130 },
+    { field: 'salaire', headerName: 'Salaire', width: 130 },
+    { field: 'jours', headerName: 'Jours', width: 130 },
+    { field: 'joursRestant', headerName: 'Jours Restant', width: 130 },
+    { field: 'joursPrit', headerName: 'Jours Prit', width: 130 },
     {
       field: 'edit',
       headerName: 'Edit',
@@ -126,8 +135,33 @@ export default function Tableau() {
           - Supprimer sélectionnés
         </Button>
       </Box>
+
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Ajout d'un utilisateur"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Ici vous pouvez ajouter des détails sur l'utilisateur.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Fermer
+          </Button>
+          <Button onClick={handleClose} color="primary" autoFocus>
+            Sauvegarder
+          </Button>
+        </DialogActions>
+      </Dialog>
+
       <DataGrid
-        rows={rows}
+        rows={employes}
         columns={columns}
         checkboxSelection
         onRowSelectionModelChange={(newSelection) => {
