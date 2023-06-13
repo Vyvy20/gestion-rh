@@ -25,15 +25,29 @@ function Profil() {
   const rows2 = [
     createData2("fiche_paie_janvier_2023", <Box><Button color='inherit' variant="outlined" onClick={handleClick} href={fiche ? fiche2:!fiche2}>Voir</Button></Box>),
   ];
+  const [prenom, setPrenom] = useState("")
+  const [nom, setNom] = useState("")
+  const [email, setEmail] = useState("")
+  const [role, setRole] = useState("")
 
   return(
         <Box>
             <Box>
                 <Typography variant='h3'>Mon profil</Typography>
-                <TextField label="Nom d'utilisateur" variant="outlined"/>
-                <TextField label="Nom" variant="outlined"/>
-                <TextField label="Prénom" variant="outlined"/>
-                <TextField label="Rôle" variant="outlined"/>
+                <Grid container>
+                  <Grid item xs={3}>
+                    <TextField label="Nom" variant="outlined" onChange={e => setNom(e.target.value)}  value={nom}/>
+                  </Grid>
+                  <Grid item xs={3}>
+                    <TextField label="Prénom" variant="outlined" onChange={e => setPrenom(e.target.value)}  value={prenom}/>
+                  </Grid>
+                  <Grid item xs={3}>
+                    <TextField label="Adresse mail" variant="outlined" onChange={e => setEmail(e.target.value)}  value={email}/>
+                  </Grid>
+                  <Grid item xs={3}>
+                    <TextField label="Rôle" variant="outlined" onChange={e => setRole(e.target.value)}  value={role}/>
+                  </Grid>
+                </Grid>
             </Box>
             <Box>
                 <Typography variant='h3'>Mes abscences</Typography>
