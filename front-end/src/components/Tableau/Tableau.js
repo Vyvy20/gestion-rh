@@ -103,8 +103,8 @@ export default function Tableau() {
           open={open}
           onClose={handleClose}
         >
-          <MenuItem onClick={handleEditClick}>Edit</MenuItem>
-          <MenuItem onClick={handleDeleteRowClick}>Delete</MenuItem>
+          <MenuItem onClick={handleEditClick}>Éditer</MenuItem>
+          <MenuItem onClick={handleDeleteRowClick}>Supprimer</MenuItem>
         </Menu>
       </div>
     );
