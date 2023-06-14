@@ -10,11 +10,6 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogActions from '@mui/material/DialogActions';
 import { GET_EMPLOYES } from '../../api/tableauApi';
 
-const config = {
-  headers: {
-    authorization: `Bearer ${localStorage.getItem('token')}`,
-  },
-};
 
 export default function Tableau() {
   const [selectedRows, setSelectedRows] = useState([]);
@@ -28,7 +23,7 @@ export default function Tableau() {
   const [jours, setJours] = useState('');
   const [open, setOpen] = useState(false);
 
-  const { loading, error, data } = useQuery(GET_EMPLOYES, config);
+  const { loading, error, data } = useQuery(GET_EMPLOYES);
 
   if (loading) return <p>Chargement...</p>;
   if (error) return <p>Erreur :</p>;
