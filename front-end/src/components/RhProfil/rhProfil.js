@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Box, Button, TextField, Typography, Table, TableBody, TableCell, TableContainer, TableRow, TableHead, Grid} from '@mui/material';
+import {Box, Button, TextField, Typography, Table, TableBody, TableCell, TableContainer, TableRow, TableHead, Grid, MenuItem} from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -12,12 +12,20 @@ function createData2(paystub, action2) {
   return { paystub, action2};
 }
 
+function createData3(startDateDonn2, endDateDonn2, addrEmail, status2) {
+  return { startDateDonn2, endDateDonn2, addrEmail, status2 };
+}
+
 //Créer une donnée test
 const rows = [
   createData('12/05/2023', '19/05/2023', 'Validé', <Box><Button color='inherit' variant="outlined">Modifier</Button> <Button color='inherit' variant="outlined">Supprimer</Button></Box>),
 ];
 
-function Profil() {
+const rows3 = [
+  createData3('15/07/2023', '31/07/2023', 'marie.test@anchorink.com', <Box><TextField label="Statut" variant='outlined' select><MenuItem value="validé">Validé</MenuItem><MenuItem value="refusé">Refusé</MenuItem></TextField></Box>),
+];
+
+function RhProfil() {
 
   const fiche2 = new URL("../../images/Fiche_paie_janvier.jpg", import.meta.url)
   const [fiche, setFiche] = useState(new URL(fiche2, import.meta.url))
@@ -129,7 +137,35 @@ function Profil() {
                   </Table>
                 </TableContainer>
             </Box>
+            <Box>
+              <Typography variant='h3'>Gestion des abscences</Typography>
+              <TableContainer>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell align="left">Date de début</TableCell>
+                      <TableCell align="left">Date de fin</TableCell>
+                      <TableCell align="left">Adresse email</TableCell>
+                      <TableCell align="left">Statut</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                      {rows3.map((row3) => (
+                          <TableRow
+                            key={row3.paystub}
+                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                          >
+                          <TableCell component="th" scope="row">{row3.startDateDonn2}</TableCell>
+                          <TableCell align="left">{row3.endDateDonn2}</TableCell>
+                          <TableCell align='left'>{row3.addrEmail}</TableCell>
+                          <TableCell align='left'>{row3.status2}</TableCell>
+                        </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+              </TableContainer>
+            </Box>
         </Box>
     )
 }
-export default Profil;
+export default RhProfil;
