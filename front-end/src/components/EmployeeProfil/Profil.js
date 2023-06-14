@@ -1,8 +1,10 @@
-import React, {useState} from 'react';
-import {Box, Button, TextField, Typography, Table, TableBody, TableCell, TableContainer, TableRow, TableHead, Grid} from '@mui/material';
+import React, {useContext, useState} from 'react';
+import {Box, Button, Typography, Table, TableBody, TableCell, TableContainer, TableRow, TableHead, Grid} from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { UserContext } from '../../page/Interface';
+import ProfilForm from './ProfilForm';
 
 //Fonction pour créer une donnée test
 function createData(startDateDonn, endDateDonn, status, action) {
@@ -18,53 +20,21 @@ const rows = [
 ];
 
 function Profil() {
-
+  const user = useContext(UserContext);
   const fiche2 = new URL("../../images/Fiche_paie_janvier.jpg", import.meta.url)
   const [fiche, setFiche] = useState(new URL(fiche2, import.meta.url))
   const handleClick = () => {setFiche(new URL("http://localhost:3000/app/home", import.meta.url))}
   const rows2 = [
     createData2("fiche_paie_janvier_2023", <Box><Button color='inherit' variant="outlined" onClick={handleClick} href={fiche ? fiche2:!fiche2}>Voir</Button></Box>),
   ];
-  const [firstName, setFirstName] = useState("")
-  const [name, setName] = useState("")
-  const [email, setEmail] = useState("")
-  const [role, setRole] = useState("")
-  const [remainDay, setRemainDay] = useState(0)
-  const [pwd, setPwd] = useState("")
-  const [job, setJob] = useState("")
-  const [tel, setTel] = useState("")
+
+  if (!user) {
+    return (<Typography>Vous n'etes pas connecté.</Typography>)
+  }
 
   return(
         <Box>
-            <Box>
-                <Typography variant='h3'>Mon profil</Typography>
-                <Grid container>
-                  <Grid item xs={4}>
-                    <TextField label="Nom" variant="outlined" onChange={e => setName(e.target.value)}  value={name}/>
-                  </Grid>
-                  <Grid item xs={4}>
-                    <TextField label="Prénom" variant="outlined" onChange={e => setFirstName(e.target.value)}  value={firstName}/>
-                  </Grid>
-                  <Grid item xs={4}>
-                    <TextField label="Adresse mail" variant="outlined" onChange={e => setEmail(e.target.value)}  value={email}/>
-                  </Grid>
-                  <Grid item xs={4}>
-                    <TextField label="Téléphone" variant="outlined" onChange={e => setTel(e.target.value)}  value={tel}></TextField>
-                  </Grid>
-                  <Grid item xs={4}>
-                    <TextField label="poste" variant="outlined" onChange={e => setJob(e.target.value)}  value={job}></TextField>
-                  </Grid>
-                  <Grid item xs={4}>
-                    <TextField label="Rôle" variant="outlined" onChange={e => setRole(e.target.value)}  value={role}/>
-                  </Grid>
-                  <Grid item xs={4}>
-                    <TextField label="mot de passe" variant="outlined" onChange={e => setPwd(e.target.value)}  value={pwd}/>
-                  </Grid>
-                  <Grid item xs={4}>
-                    <TextField label="Jours restant de congé" variant="outlined" onChange={e => setRemainDay(e.target.value)}  value={remainDay}/>
-                  </Grid>
-                </Grid>
-            </Box>
+			<ProfilForm />
             <Box>
                 <Typography variant='h3'>Mes abscences</Typography>
                 <TableContainer>

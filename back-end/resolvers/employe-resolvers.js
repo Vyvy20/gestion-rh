@@ -15,7 +15,10 @@ const employesResolvers = {
                 return []
             }
             return await database.select().from('employe');
-        }
+        },
+        getMe: async (parent, args, { user }, info) => {
+            return user
+        },
     },
     Mutation: {
         addEmploye: async (parent, {prenom, nom, email, telephone, poste, salaire, password, jours}, { user }, info) => {
@@ -64,7 +67,7 @@ const employesResolvers = {
             return "Employes Deleted"
         },
         updateEmploye: async (parent, args, { user }, info) => {
-            if (!user || (user.id != id && user.role != "rh")) {
+            if (!user || (user.id != args.id && user.role != "rh")) {
                 return null
             }
             const id = args.id
@@ -82,7 +85,7 @@ const employesResolvers = {
                 return "Password Changed"
             }
             else {
-                return "Current Password is incorrect"
+                throw new Error("Current Password is incorrect")
             }
         }
     },

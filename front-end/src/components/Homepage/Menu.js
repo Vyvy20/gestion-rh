@@ -15,6 +15,7 @@ function Menu({ setUser }) {
         onCompleted: (data) => {
             setUser(data.connect)
             localStorage.setItem("token", data.connect.token);
+            localStorage.setItem("role", data.connect.role);
         }
     });
     
@@ -22,6 +23,7 @@ function Menu({ setUser }) {
         onCompleted: () => {
             setUser()
             localStorage.removeItem("token");
+            localStorage.removeItem("role");
         }
     });
 
