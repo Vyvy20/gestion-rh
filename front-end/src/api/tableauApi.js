@@ -53,3 +53,27 @@ export const DELETES_EMPLOYES = gql`
     deleteEmployes(ids: $ids)
   }
 `;
+
+export const UPDATE_EMPLOYES = gql`
+  mutation UpdateEmploye(
+    $updateEmployeId: Int!
+    $jours: Int!
+    $prenom: String
+    $nom: String
+    $email: String
+    $telephone: String
+    $poste: String
+    $salaire: Int
+  ) {
+    updateEmploye(
+      id: $updateEmployeId
+      jours: $jours
+      prenom: $prenom
+      nom: $nom
+      email: $email
+      telephone: $telephone
+      poste: $poste
+      salaire: $salaire
+    )
+  }
+`;

@@ -2,8 +2,11 @@ import React, { useState } from 'react';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import { useQuery, useMutation } from '@apollo/client';
 import Button from '@mui/material/Button';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 import { Box } from '@mui/material';
 import AddEmploye from '../Modal/AddEmploye';
+import UpdateEmploye from '../Modal/UpdateEmploye';
 import {
   GET_EMPLOYES,
   DELETE_EMPLOYE,
@@ -12,7 +15,10 @@ import {
 
 export default function Tableau() {
   const [selectedRows, setSelectedRows] = useState([]);
+  const [selectedUser, setSelectedUser] = useState(null);
   const [open, setOpen] = useState(false);
+  const [openUpdate, setOpenUpdate] = useState(false);
+
   const [deleteEmploye] = useMutation(DELETE_EMPLOYE);
   const [deletesEmployes] = useMutation(DELETES_EMPLOYES);
 
@@ -39,8 +45,9 @@ export default function Tableau() {
     setOpen(true);
   };
 
-  const handleClickEdit = (userId) => {
-    alert("Modifier l'utilisateur avec l'ID : " + userId);
+  const handleClickEdit = (userId, userData) => {
+    setSelectedUser(userData);
+    setOpenUpdate(true);
   };
 
   const handleDeleteClick = (userId) => {
@@ -53,34 +60,53 @@ export default function Tableau() {
       });
   };
 
-  const EditButton = (params) => {
+  const ActionsMenu = (params) => {
+    const [anchorEl, setAnchorEl] = useState(null);
+    const open = Boolean(anchorEl);
     const userId = params.row.id;
 
-    const handleEditClick = (e) => {
-      console.log(userId);
-      e.stopPropagation();
-      handleClickEdit(userId);
+    const handleClick = (event) => {
+      event.stopPropagation();
+      setAnchorEl(event.currentTarget);
     };
 
-    return (
-      <Button variant="contained" onClick={handleEditClick}>
-        Edit
-      </Button>
-    );
-  };
+    const handleClose = () => {
+      setAnchorEl(null);
+    };
 
-  const DeleteButton = (params) => {
-    const userId = params.row.id;
+    const handleEditClick = (e) => {
+      e.stopPropagation();
+      const userData = params.row;
+      handleClickEdit(userId, userData);
+      handleClose();
+    };
 
     const handleDeleteRowClick = (e) => {
       e.stopPropagation();
       handleDeleteClick(userId);
+      handleClose();
     };
 
     return (
-      <Button variant="contained" onClick={handleDeleteRowClick}>
-        Delete
-      </Button>
+      <div>
+        <Button
+          aria-controls="simple-menu"
+          aria-haspopup="true"
+          onClick={handleClick}
+        >
+          Menu
+        </Button>
+        <Menu
+          id="simple-menu"
+          anchorEl={anchorEl}
+          keepMounted
+          open={open}
+          onClose={handleClose}
+        >
+          <MenuItem onClick={handleEditClick}>Edit</MenuItem>
+          <MenuItem onClick={handleDeleteRowClick}>Delete</MenuItem>
+        </Menu>
+      </div>
     );
   };
 
@@ -101,20 +127,12 @@ export default function Tableau() {
     { field: 'joursRestant', headerName: 'Jours Restant', width: 130 },
     { field: 'joursPrit', headerName: 'Jours Prit', width: 130 },
     {
-      field: 'edit',
-      headerName: 'Edit',
+      field: 'actions',
+      headerName: 'Actions',
       sortable: false,
       width: 100,
       disableClickEventBubbling: true,
-      renderCell: (params) => <EditButton {...params} />,
-    },
-    {
-      field: 'delete',
-      headerName: 'Delete',
-      sortable: false,
-      width: 100,
-      disableClickEventBubbling: true,
-      renderCell: (params) => <DeleteButton {...params} />,
+      renderCell: (params) => <ActionsMenu {...params} />,
     },
   ];
 
@@ -147,6 +165,11 @@ export default function Tableau() {
         }}
         slots={{ toolbar: GridToolbar }}
         pageSizeOptions={[5, 10, 50]}
+      />
+      <UpdateEmploye
+        openUpdate={openUpdate}
+        setOpenUpdate={setOpenUpdate}
+        selectedUser={selectedUser}
       />
       <AddEmploye open={open} setOpen={setOpen} />
     </div>
