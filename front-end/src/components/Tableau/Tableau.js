@@ -111,21 +111,21 @@ export default function Tableau() {
   };
 
   const columns = [
-    { field: 'id', headerName: 'ID', width: 70 },
+    { field: 'id', headerName: 'ID', width: 50 },
     { field: 'nom', headerName: 'Nom', width: 130 },
     { field: 'prenom', headerName: 'Prénom', width: 130 },
     { field: 'email', headerName: 'Email', width: 130 },
-    { field: 'telephone', headerName: 'Téléphone', width: 130 },
-    { field: 'poste', headerName: 'Poste', width: 130 },
+    { field: 'telephone', headerName: 'Téléphone', width: 100 },
+    { field: 'poste', headerName: 'Poste', width: 50 },
     {
       field: 'salaire',
       headerName: 'Salaire',
-      width: 130,
+      width: 70,
       valueFormatter: (params) => `${params.value} €`,
     },
-    { field: 'jours', headerName: 'Jours', width: 130 },
-    { field: 'joursRestant', headerName: 'Jours Restant', width: 130 },
-    { field: 'joursPrit', headerName: 'Jours Prit', width: 130 },
+    { field: 'jours', headerName: 'Jours', width: 50 },
+    { field: 'joursRestant', headerName: 'Jours Restant', width: 99 },
+    { field: 'joursPrit', headerName: 'Jours Prit', width: 75 },
     {
       field: 'actions',
       headerName: 'Actions',
