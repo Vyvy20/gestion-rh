@@ -47,3 +47,9 @@ export const DELETE_EMPLOYE = gql`
     deleteEmploye(id: $deleteEmployeId)
   }
 `;
+
+export const DELETES_EMPLOYES = gql`
+  mutation DeleteEmployes($ids: [Int!]) {
+    deleteEmployes(ids: $ids)
+  }
+`;

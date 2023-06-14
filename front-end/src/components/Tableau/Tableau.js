@@ -4,13 +4,18 @@ import { useQuery, useMutation } from '@apollo/client';
 import Button from '@mui/material/Button';
 import { Box } from '@mui/material';
 import AddEmploye from '../Modal/AddEmploye';
-import { GET_EMPLOYES, DELETE_EMPLOYE } from '../../api/tableauApi';
+import {
+  GET_EMPLOYES,
+  DELETE_EMPLOYE,
+  DELETES_EMPLOYES,
+} from '../../api/tableauApi';
 
 export default function Tableau() {
   const [selectedRows, setSelectedRows] = useState([]);
   const [open, setOpen] = useState(false);
-
   const [deleteEmploye] = useMutation(DELETE_EMPLOYE);
+  const [deletesEmployes] = useMutation(DELETES_EMPLOYES);
+
   const { loading, error, data } = useQuery(GET_EMPLOYES, {
     pollInterval: 5000,
   });
@@ -21,12 +26,13 @@ export default function Tableau() {
   const employes = data.getEmployes;
 
   const handleClickeDelete = () => {
-    if (selectedRows && selectedRows.length > 0) {
-      console.log('Lignes sélectionnées: ', selectedRows);
-      selectedRows.forEach((userId) => handleDeleteClick(userId));
-    } else {
-      console.log('Aucune ligne sélectionnée');
-    }
+    deletesEmployes({ variables: { ids: selectedRows } })
+      .then(() => {
+        alert(`Employé avec l'ID ${selectedRows} supprimé avec succès.`);
+      })
+      .catch((error) => {
+        alert(`Erreur lors de la suppression de l'employé : ${error.message}`);
+      });
   };
 
   const handleClickAdd = () => {
