@@ -14,7 +14,7 @@ function createData2(paystub, action2) {
 
 //Créer une donnée test
 const rows = [
-  createData('12/05/2023', '19/05/2023', 'Congé payé', 'Validé', <Box><Button color='inherit' variant="outlined">Modifier</Button> <Button color='inherit' variant="outlined">Supprimer</Button></Box>),
+  createData('12/05/2023', '19/05/2023', 'Validé', <Box><Button color='inherit' variant="outlined">Modifier</Button> <Button color='inherit' variant="outlined">Supprimer</Button></Box>),
 ];
 
 function Profil() {
