@@ -1,17 +1,10 @@
-import config from "./config/config.json" assert { type: 'json' };
-import knex from "knex";
+import { database } from "./database.js";
 
-const databaseConf = config.database
-
-const database = knex({
-    client: 'mysql',
-    connection: {
-      host : databaseConf.host,
-      port : databaseConf.port,
-      user : databaseConf.username,
-      password : databaseConf.password,
-      database : databaseConf.database
+export default async function getUser(token) {
+    const user_id = await database.select("employe_id").from("token").where("token", token);
+    if(user_id.length === 0) {
+        return null
     }
-  });
-
-export { database }
+    const result = await database.select().from("employe").where("id", user_id[0].employe_id)
+    return result[0]
+}
