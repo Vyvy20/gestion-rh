@@ -30,6 +30,9 @@ function Profil() {
   const [email, setEmail] = useState("")
   const [role, setRole] = useState("")
   const [remainDay, setRemainDay] = useState(0)
+  const [pwd, setPwd] = useState("")
+  const [job, setJob] = useState("")
+  const [tel, setTel] = useState("")
 
   return(
         <Box>
@@ -46,7 +49,16 @@ function Profil() {
                     <TextField label="Adresse mail" variant="outlined" onChange={e => setEmail(e.target.value)}  value={email}/>
                   </Grid>
                   <Grid item xs={4}>
+                    <TextField label="Téléphone" variant="outlined" onChange={e => setTel(e.target.value)}  value={tel}></TextField>
+                  </Grid>
+                  <Grid item xs={4}>
+                    <TextField label="poste" variant="outlined" onChange={e => setJob(e.target.value)}  value={job}></TextField>
+                  </Grid>
+                  <Grid item xs={4}>
                     <TextField label="Rôle" variant="outlined" onChange={e => setRole(e.target.value)}  value={role}/>
+                  </Grid>
+                  <Grid item xs={4}>
+                    <TextField label="mot de passe" variant="outlined" onChange={e => setPwd(e.target.value)}  value={pwd}/>
                   </Grid>
                   <Grid item xs={4}>
                     <TextField label="Jours restant de congé" variant="outlined" onChange={e => setRemainDay(e.target.value)}  value={remainDay}/>
