@@ -72,7 +72,9 @@ export default function ProfilForm() {
     const [email, setEmail] = useState("")
     const [telephone, setTelephone] = useState("")
     const [updated, setUpdated] = useState(false)
-    const {data, loading, error, refetch } = useQuery(GET_ME);
+
+    const { loading, error, data, refetch } = useQuery(GET_ME);
+
     const [update, {loading2, error2}] = useMutation(UPDATE_EMPLOYE, {
         onCompleted: (data) => {
             refetch()
@@ -84,14 +86,14 @@ export default function ProfilForm() {
     });
 
     useEffect(() => {
-        if (data) {
+        if (data.getMe) {
             setMe(data.getMe)
             setPrenom(data.getMe.prenom)
             setNom(data.getMe.nom)
             setTelephone(data.getMe.telephone)
             setEmail(data.getMe.email)
         }
-    }, [data])
+    }, [data.getMe])
 
     console.log(me)
 
@@ -109,52 +111,52 @@ export default function ProfilForm() {
 
     return (
         <Box>
-        {updated && (
-            <Snackbar open={updated}>
-                <Alert severity="success">
-                    {updated}
-                </Alert>
-            </Snackbar>
+            <Typography variant='h3'>Mon profil</Typography>
+            {updated && (
+                <Snackbar open={updated}>
+                    <Alert severity="success">
+                        {updated}
+                    </Alert>
+                </Snackbar>
+            )}
+            {error && (
+                <Typography>{error.message}</Typography>
+            )}
+            {!me && (<Typography>You are not connected</Typography>)}
+            {me && (
+            <Box> 
+            <Grid container>
+                <Grid item xs={4}>
+                <TextField label="Nom" variant="outlined" onChange={e => setNom(e.target.value)}  value={nom}/>
+                </Grid>
+                <Grid item xs={4}>
+                <TextField label="Prénom" variant="outlined" onChange={e => setPrenom(e.target.value)}  value={prenom}/>
+                </Grid>
+                <Grid item xs={4}>
+                <TextField label="Adresse mail" variant="outlined" onChange={e => setEmail(e.target.value)}  value={email}/>
+                </Grid>
+                <Grid item xs={4}>
+                <TextField label="Téléphone" variant="outlined" onChange={e => setTelephone(e.target.value)}  value={telephone}/>
+                </Grid>
+                <Grid item xs={4}>
+                <Typography label="poste" variant="outlined">Poste: {me.poste ? me.poste : "Non renseigné"}</Typography>
+                </Grid>
+                <Grid item xs={4}>
+                <Typography label="Rôle" variant="outlined">Role: {me.role}</Typography>
+                </Grid>
+                <Grid item xs={4}>
+                <Typography label="Jours restant de congé" variant="outlined" >Jours restant: {me.joursRestant}</Typography>
+                </Grid>
+                <Grid item xs={4}>
+                <Button variant="outlined" onClick={handleUpdate}>{loading2 ? "En Cours" : "Update"}</Button>
+                {error2 && (
+                    <Typography color="red">Error while updating your profile.</Typography>
+                )}
+                </Grid>
+            </Grid>
+            <PasswordForm me={me} />
+            </Box>
         )}
-        {error && (
-            <Typography>{error.message}</Typography>
-        )}
-        {!me && (<Typography>You are not connected</Typography>)}
-        {me && (
-        <Box>
-          <Typography variant='h3'>Mon profil</Typography>
-          <Grid container>
-            <Grid item xs={4}>
-              <TextField label="Nom" variant="outlined" onChange={e => setNom(e.target.value)}  value={nom}/>
-            </Grid>
-            <Grid item xs={4}>
-              <TextField label="Prénom" variant="outlined" onChange={e => setPrenom(e.target.value)}  value={prenom}/>
-            </Grid>
-            <Grid item xs={4}>
-              <TextField label="Adresse mail" variant="outlined" onChange={e => setEmail(e.target.value)}  value={email}/>
-            </Grid>
-            <Grid item xs={4}>
-              <TextField label="Téléphone" variant="outlined" onChange={e => setTelephone(e.target.value)}  value={telephone}/>
-            </Grid>
-            <Grid item xs={4}>
-              <Typography label="poste" variant="outlined">Poste: {data.getMe.poste ? data.getMe.poste : "Non renseigné"}</Typography>
-            </Grid>
-            <Grid item xs={4}>
-              <Typography label="Rôle" variant="outlined">Role: {data.getMe.role}</Typography>
-            </Grid>
-            <Grid item xs={4}>
-              <Typography label="Jours restant de congé" variant="outlined" >Jours restant: {me.joursRestant}</Typography>
-            </Grid>
-            <Grid item xs={4}>
-              <Button variant="outlined" onClick={handleUpdate}>{loading2 ? "En Cours" : "Update"}</Button>
-              {error2 && (
-                <Typography color="red">Error while updating your profile.</Typography>
-              )}
-            </Grid>
-          </Grid>
-          <PasswordForm me={me} />
-        </Box>
-      )}
       </Box>
     )
 
