@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
-import { useQuery } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client';
 import Button from '@mui/material/Button';
 import { Box } from '@mui/material';
 import AddEmploye from '../Modal/AddEmploye';
-import { GET_EMPLOYES } from '../../api/tableauApi';
+import { GET_EMPLOYES, DELETE_EMPLOYE } from '../../api/tableauApi';
 
 export default function Tableau() {
   const [selectedRows, setSelectedRows] = useState([]);
   const [open, setOpen] = useState(false);
 
+  const [deleteEmploye] = useMutation(DELETE_EMPLOYE);
   const { loading, error, data } = useQuery(GET_EMPLOYES, {
     pollInterval: 5000,
   });
@@ -37,7 +38,13 @@ export default function Tableau() {
   };
 
   const handleDeleteClick = (userId) => {
-    alert("Supprimer l'utilisateur avec l'ID : " + userId);
+    deleteEmploye({ variables: { deleteEmployeId: userId } })
+      .then(() => {
+        alert(`Employé avec l'ID ${userId} supprimé avec succès.`);
+      })
+      .catch((error) => {
+        alert(`Erreur lors de la suppression de l'employé : ${error.message}`);
+      });
   };
 
   const EditButton = (params) => {

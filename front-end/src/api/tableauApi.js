@@ -1,5 +1,5 @@
 import { gql } from '@apollo/client';
-
+// Query
 export const GET_EMPLOYES = gql`
   query Query {
     getEmployes {
@@ -17,6 +17,7 @@ export const GET_EMPLOYES = gql`
   }
 `;
 
+// Mutation
 export const ADD_EMPLOYE = gql`
   mutation AddEmploye(
     $prenom: String!
@@ -38,5 +39,11 @@ export const ADD_EMPLOYE = gql`
       poste: $poste
       salaire: $salaire
     )
+  }
+`;
+
+export const DELETE_EMPLOYE = gql`
+  mutation DeleteEmploye($deleteEmployeId: Int!) {
+    deleteEmploye(id: $deleteEmployeId)
   }
 `;
