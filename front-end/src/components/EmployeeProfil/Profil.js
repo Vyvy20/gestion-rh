@@ -5,8 +5,8 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 //Fonction pour créer une donnée test
-function createData(startDateDonn, endDateDonn, type, status, action) {
-  return { startDateDonn, endDateDonn, type, status, action };
+function createData(startDateDonn, endDateDonn, status, action) {
+  return { startDateDonn, endDateDonn, status, action };
 }
 function createData2(paystub, action2) {
   return { paystub, action2};
@@ -25,27 +25,31 @@ function Profil() {
   const rows2 = [
     createData2("fiche_paie_janvier_2023", <Box><Button color='inherit' variant="outlined" onClick={handleClick} href={fiche ? fiche2:!fiche2}>Voir</Button></Box>),
   ];
-  const [prenom, setPrenom] = useState("")
-  const [nom, setNom] = useState("")
+  const [firstName, setFirstName] = useState("")
+  const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [role, setRole] = useState("")
+  const [remainDay, setRemainDay] = useState(0)
 
   return(
         <Box>
             <Box>
                 <Typography variant='h3'>Mon profil</Typography>
                 <Grid container>
-                  <Grid item xs={3}>
-                    <TextField label="Nom" variant="outlined" onChange={e => setNom(e.target.value)}  value={nom}/>
+                  <Grid item xs={4}>
+                    <TextField label="Nom" variant="outlined" onChange={e => setName(e.target.value)}  value={name}/>
                   </Grid>
-                  <Grid item xs={3}>
-                    <TextField label="Prénom" variant="outlined" onChange={e => setPrenom(e.target.value)}  value={prenom}/>
+                  <Grid item xs={4}>
+                    <TextField label="Prénom" variant="outlined" onChange={e => setFirstName(e.target.value)}  value={firstName}/>
                   </Grid>
-                  <Grid item xs={3}>
+                  <Grid item xs={4}>
                     <TextField label="Adresse mail" variant="outlined" onChange={e => setEmail(e.target.value)}  value={email}/>
                   </Grid>
-                  <Grid item xs={3}>
+                  <Grid item xs={4}>
                     <TextField label="Rôle" variant="outlined" onChange={e => setRole(e.target.value)}  value={role}/>
+                  </Grid>
+                  <Grid item xs={4}>
+                    <TextField label="Jours restant de congé" variant="outlined" onChange={e => setRemainDay(e.target.value)}  value={remainDay}/>
                   </Grid>
                 </Grid>
             </Box>
@@ -57,7 +61,6 @@ function Profil() {
                       <TableRow>
                         <TableCell align="left">Date de début</TableCell>
                         <TableCell align="left">Date de fin</TableCell>
-                        <TableCell align="left">Type de congé</TableCell>
                         <TableCell align="left">Statut</TableCell>
                         <TableCell align="left">Action</TableCell>
                       </TableRow>
@@ -70,7 +73,6 @@ function Profil() {
                         >
                         <TableCell component="th" scope="row">{row.startDateDonn}</TableCell>
                         <TableCell align="left">{row.endDateDonn}</TableCell>
-                        <TableCell align="left">{row.type}</TableCell>
                         <TableCell align="left">{row.status}</TableCell>
                         <TableCell align="left">{row.action}</TableCell>
                         </TableRow>
