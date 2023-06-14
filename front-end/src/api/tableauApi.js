@@ -16,3 +16,27 @@ export const GET_EMPLOYES = gql`
     }
   }
 `;
+
+export const ADD_EMPLOYE = gql`
+  mutation AddEmploye(
+    $prenom: String!
+    $nom: String!
+    $email: String!
+    $password: String!
+    $jours: Int!
+    $telephone: String
+    $poste: String
+    $salaire: Int
+  ) {
+    addEmploye(
+      prenom: $prenom
+      nom: $nom
+      email: $email
+      password: $password
+      jours: $jours
+      telephone: $telephone
+      poste: $poste
+      salaire: $salaire
+    )
+  }
+`;

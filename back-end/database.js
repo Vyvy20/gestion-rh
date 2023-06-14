@@ -1,17 +1,17 @@
-import config from "./config/config.json" assert { type: 'json' };
-import knex from "knex";
+import config from './config/config_template.json' assert { type: 'json' };
+import knex from 'knex';
 
-const databaseConf = config.database
+const databaseConf = config.database;
 
 const database = knex({
-    client: 'mysql',
-    connection: {
-      host : databaseConf.host,
-      port : databaseConf.port,
-      user : databaseConf.username,
-      password : databaseConf.password,
-      database : databaseConf.database
-    }
-  });
+  client: 'mysql',
+  connection: {
+    host: databaseConf.host,
+    port: databaseConf.port,
+    user: databaseConf.username,
+    password: databaseConf.password,
+    database: databaseConf.database,
+  },
+});
 
-export { database }
+export { database };

@@ -3,41 +3,21 @@ import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import { useQuery } from '@apollo/client';
 import Button from '@mui/material/Button';
 import { Box } from '@mui/material';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogActions from '@mui/material/DialogActions';
+import AddEmploye from '../Modal/AddEmploye';
 import { GET_EMPLOYES } from '../../api/tableauApi';
-
 
 export default function Tableau() {
   const [selectedRows, setSelectedRows] = useState([]);
-  const [prenom, setPrenom] = useState('');
-  const [nom, setNom] = useState('');
-  const [email, setEmail] = useState('');
-  const [telephone, setTelephone] = useState('');
-  const [poste, setPoste] = useState('');
-  const [salaire, setSalaire] = useState('');
-  const [password, setPassword] = useState('');
-  const [jours, setJours] = useState('');
   const [open, setOpen] = useState(false);
 
-  const { loading, error, data } = useQuery(GET_EMPLOYES);
+  const { loading, error, data } = useQuery(GET_EMPLOYES, {
+    pollInterval: 5000,
+  });
 
   if (loading) return <p>Chargement...</p>;
-  if (error) return <p>Erreur :</p>;
+  if (error) return <p>Erreur : {error.message}</p>;
 
-  console.log(data);
   const employes = data.getEmployes;
-
-  const handleClickAdd = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   const handleClickeDelete = () => {
     if (selectedRows && selectedRows.length > 0) {
@@ -46,6 +26,10 @@ export default function Tableau() {
     } else {
       console.log('Aucune ligne sélectionnée');
     }
+  };
+
+  const handleClickAdd = () => {
+    setOpen(true);
   };
 
   const handleClickEdit = (userId) => {
@@ -94,7 +78,12 @@ export default function Tableau() {
     { field: 'email', headerName: 'Email', width: 130 },
     { field: 'telephone', headerName: 'Téléphone', width: 130 },
     { field: 'poste', headerName: 'Poste', width: 130 },
-    { field: 'salaire', headerName: 'Salaire', width: 130 },
+    {
+      field: 'salaire',
+      headerName: 'Salaire',
+      width: 130,
+      valueFormatter: (params) => `${params.value} €`,
+    },
     { field: 'jours', headerName: 'Jours', width: 130 },
     { field: 'joursRestant', headerName: 'Jours Restant', width: 130 },
     { field: 'joursPrit', headerName: 'Jours Prit', width: 130 },
@@ -131,30 +120,6 @@ export default function Tableau() {
         </Button>
       </Box>
 
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">
-          {"Ajout d'un utilisateur"}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Ici vous pouvez ajouter des détails sur l'utilisateur.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Fermer
-          </Button>
-          <Button onClick={handleClose} color="primary" autoFocus>
-            Sauvegarder
-          </Button>
-        </DialogActions>
-      </Dialog>
-
       <DataGrid
         rows={employes}
         columns={columns}
@@ -170,6 +135,7 @@ export default function Tableau() {
         slots={{ toolbar: GridToolbar }}
         pageSizeOptions={[5, 10, 50]}
       />
+      <AddEmploye open={open} setOpen={setOpen} />
     </div>
   );
 }
