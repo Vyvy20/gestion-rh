@@ -77,3 +77,17 @@ export const UPDATE_EMPLOYES = gql`
     )
   }
 `;
+
+export const UPDATE_PASSWORD = gql`
+  mutation Mutation(
+    $id: Int!
+    $currentPassword: String!
+    $newPassword: String!
+  ) {
+    changePassword(
+      id: $id
+      currentPassword: $currentPassword
+      newPassword: $newPassword
+    )
+  }
+`;

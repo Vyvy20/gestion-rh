@@ -47,8 +47,16 @@ export default function AddEmploye({ open, setOpen }) {
         poste,
         salaire: parseInt(salaire),
       },
-    });
+    })
+      .then(() => {
+        handleClose();
+      })
+      .catch((error) => {
+        // Gérer les erreurs
+        console.error("Erreur lors de la mise à jour de l'employé :", error);
+      });
   };
+
   // Empêché d'affiche la modal
   /* if (loading) return <p>Chargement...</p>;
   if (error) return <p>Erreur : {error.message}</p>;

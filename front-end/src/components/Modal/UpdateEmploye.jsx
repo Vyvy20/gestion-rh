@@ -46,7 +46,7 @@ export default function UpdateEmploye({
 
     updateEmployes({
       variables: {
-        updateEmployeId: parseInt(selectedUser.id), // Assurez-vous que l'ID est un nombre entier
+        updateEmployeId: parseInt(selectedUser.id),
         prenom,
         nom,
         email,

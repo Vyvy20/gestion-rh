@@ -7,6 +7,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { Box } from '@mui/material';
 import AddEmploye from '../Modal/AddEmploye';
 import UpdateEmploye from '../Modal/UpdateEmploye';
+import ChangePassword from '../Modal/ChangePassword';
 import {
   GET_EMPLOYES,
   DELETE_EMPLOYE,
@@ -18,6 +19,7 @@ export default function Tableau() {
   const [selectedUser, setSelectedUser] = useState(null);
   const [open, setOpen] = useState(false);
   const [openUpdate, setOpenUpdate] = useState(false);
+  const [openChangePassword, setOpenChangePassword] = useState(false);
 
   const [deleteEmploye] = useMutation(DELETE_EMPLOYE);
   const [deletesEmployes] = useMutation(DELETES_EMPLOYES);
@@ -45,7 +47,12 @@ export default function Tableau() {
     setOpen(true);
   };
 
-  const handleClickEdit = (userId, userData) => {
+  const handleClickPassword = (userData) => {
+    setSelectedUser(userData);
+    setOpenChangePassword(true);
+  };
+
+  const handleClickEdit = (userData) => {
     setSelectedUser(userData);
     setOpenUpdate(true);
   };
@@ -80,6 +87,12 @@ export default function Tableau() {
       handleClickEdit(userId, userData);
       handleClose();
     };
+    const handlePasswordClick = (e) => {
+      e.stopPropagation();
+      const userData = params.row;
+      handleClickPassword(userData);
+      handleClose();
+    };
 
     const handleDeleteRowClick = (e) => {
       e.stopPropagation();
@@ -105,6 +118,9 @@ export default function Tableau() {
         >
           <MenuItem onClick={handleEditClick}>Éditer</MenuItem>
           <MenuItem onClick={handleDeleteRowClick}>Supprimer</MenuItem>
+          <MenuItem onClick={handlePasswordClick}>
+            Modifier le mot de passe
+          </MenuItem>
         </Menu>
       </div>
     );
@@ -172,6 +188,12 @@ export default function Tableau() {
         selectedUser={selectedUser}
       />
       <AddEmploye open={open} setOpen={setOpen} />
+
+      <ChangePassword
+        openChangePassword={openChangePassword}
+        setOpenChangePassword={setOpenChangePassword}
+        selectedUser={selectedUser}
+      />
     </div>
   );
 }
