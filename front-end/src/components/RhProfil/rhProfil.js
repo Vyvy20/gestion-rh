@@ -84,6 +84,9 @@ function RhProfil() {
                   <Grid item xs={4}>
                     <TextField label="Jours restant de congé" variant="outlined" onChange={e => setRemainDay(e.target.value)}  value={remainDay}/>
                   </Grid>
+                  <Grid item xs={4}>
+                    <Button color='inherit' variant="outlined">Modifier les informations</Button>
+                  </Grid>
                 </Grid>
             </Box>
             <Box>
