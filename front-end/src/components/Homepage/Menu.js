@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { useMutation } from '@apollo/client';
 import { CONNECTION, DISCONNECT } from '../../api/connectionApi.js';
+import { useNavigate } from 'react-router-dom';
 import {
   Button,
   Box,
@@ -22,7 +23,9 @@ function Menu({ setUser }) {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [successSnackbarOpen, setSuccessSnackbarOpen] = useState(false);
   const [disconnectSnackbarOpen, setDisconnectSnackbarOpen] = useState(false);
+
   const user = useContext(UserContext);
+  const navigate = useNavigate();
 
   const [connect, { loading, error }] = useMutation(CONNECTION, {
     onCompleted: (data) => {
@@ -116,11 +119,23 @@ function Menu({ setUser }) {
           <Box sx={{ alignSelf: 'center' }}>
             {user ? (
               <>
-                <Button color="inherit">Button 2</Button>
-                <Button color="inherit">Button 3</Button>
-                <Button color="inherit" onClick={handleDisconnect}>
-                  Déconnexion
-                </Button>
+                {user.role === 'rh' ? (
+                  <>
+                    <Button
+                      color="inherit"
+                      onClick={() => navigate(`/app/rhHome/`)}
+                    >
+                      Tableau
+                    </Button>
+                    <Button color="inherit">Dashboard</Button>
+                  </>
+                ) : (
+                  <>
+                    <Button color="inherit" onClick={handleDisconnect}>
+                      Déconnexion
+                    </Button>
+                  </>
+                )}
               </>
             ) : (
               <Button color="inherit" onClick={handleConnect}>
