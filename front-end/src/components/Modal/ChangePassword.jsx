@@ -7,7 +7,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogActions from '@mui/material/DialogActions';
-import { UPDATE_PASSWORD } from '../../api/tableauApi';
+import { UPDATE_PASSWORD } from '../../api/employeApi';
 
 export default function ChangePassword({
   selectedUser,
@@ -43,7 +43,7 @@ export default function ChangePassword({
         console.error('Erreur lors du changement de mot de passe :', error);
       });
   };
-
+ 
   /* if (loading) return <p>Chargement...</p>;
   if (error) return <p>Erreur : {error.message}</p>;
   if (data) return <p>Le mot de passe de l'utilisateur a bien été modifié !</p>; */

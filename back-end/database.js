@@ -1,4 +1,4 @@
-import config from './config/config_template.json' assert { type: 'json' };
+import config from './config/config.json' assert { type: 'json' };
 import knex from 'knex';
 
 const databaseConf = config.database;

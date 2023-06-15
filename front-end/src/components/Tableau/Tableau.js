@@ -12,7 +12,7 @@ import {
   GET_EMPLOYES,
   DELETE_EMPLOYE,
   DELETES_EMPLOYES,
-} from '../../api/tableauApi';
+} from '../../api/employeApi';
 
 export default function Tableau() {
   const [selectedRows, setSelectedRows] = useState([]);

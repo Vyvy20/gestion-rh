@@ -8,7 +8,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogActions from '@mui/material/DialogActions';
-import { UPDATE_EMPLOYES } from '../../api/tableauApi';
+import { UPDATE_EMPLOYES } from '../../api/employeApi';
 
 export default function UpdateEmploye({
   selectedUser,

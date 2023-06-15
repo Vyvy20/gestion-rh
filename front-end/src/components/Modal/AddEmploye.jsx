@@ -8,7 +8,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogActions from '@mui/material/DialogActions';
-import { ADD_EMPLOYE } from '../../api/tableauApi';
+import { ADD_EMPLOYE } from '../../api/employeApi';
 
 export default function AddEmploye({ open, setOpen }) {
   const [prenom, setPrenom] = useState('');
