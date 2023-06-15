@@ -1,5 +1,6 @@
 import { database } from "../database.js";
 import sha256 from "js-sha256"
+import { joursRestant } from "../helpers/employeHelper.js";
 
 const employesResolvers = {
     Query: {
@@ -91,13 +92,7 @@ const employesResolvers = {
     },
     Employe: {
         joursRestant: async (parent, { args }, context, info) => {
-            const results = await database.select("duree").from("absence").where("employe_id", parent.id)
-            let duree = 0;
-            results.forEach(result => {
-                duree += result.duree
-            });
-
-            return parent.jours - duree
+            return await joursRestant(parent.id)
         },
         joursPrit: async (parent, { args }, context, info) => {
             const results = await database.select("duree").from("absence").where("employe_id", parent.id)
