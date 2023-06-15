@@ -16,6 +16,7 @@ function Menu({ setUser }) {
             setUser(data.connect)
             localStorage.setItem("token", data.connect.token);
             localStorage.setItem("role", data.connect.role);
+            localStorage.setItem("id", data.connect.id);
         }
     });
     
@@ -24,6 +25,7 @@ function Menu({ setUser }) {
             setUser()
             localStorage.removeItem("token");
             localStorage.removeItem("role");
+            localStorage.removeItem("id");
         }
     });
 

@@ -6,7 +6,7 @@ import Menu from "../components/Homepage/Menu"
 export const UserContext = createContext();
 
 function Interface(props) {
-    const [user, setUser] = useState({ token: localStorage.getItem("token"), role: localStorage.getItem("role")})
+    const [user, setUser] = useState({ token: localStorage.getItem("token"), role: localStorage.getItem("role"), id: parseInt(localStorage.getItem("id"))})
 
     return (
         <Box>
