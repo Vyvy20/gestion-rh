@@ -3,6 +3,7 @@ import { Box, Typography, TableContainer, Table, TableRow, TableHead, TableCell,
 import { useMutation, useQuery } from "@apollo/client";
 import { GET_ABSENCE, VALIDATE_ABSENCE } from "../../api/absenceApi";
 import { UserContext } from "../../page/Interface";
+import AbsencesForm from "./AbsencesForm";
 
 function ValidateAbsence({ absenceId, onClick }) {
 	const [validate, {loading, error }] = useMutation(VALIDATE_ABSENCE, { variables: { id: absenceId }})
@@ -24,7 +25,7 @@ function ValidateAbsence({ absenceId, onClick }) {
 	)
 }
 
-export default function AbsencesForm({userId}) {
+export default function AbsencesTable({userId}) {
     const me = useContext(UserContext)
     const {loading, error, data, refetch} = useQuery(GET_ABSENCE, { variables: {userId: userId}})
 
@@ -72,6 +73,7 @@ export default function AbsencesForm({userId}) {
               </TableBody>
             </Table>
           </TableContainer>
+          <AbsencesForm userId={userId} refetch={refetch}/>
         </Box>
     )
 }

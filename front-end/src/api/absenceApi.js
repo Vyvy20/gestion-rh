@@ -18,3 +18,9 @@ export const VALIDATE_ABSENCE = gql`
     validate(id: $id)
   }
 `;
+
+export const ADD_ABSENCE = gql`
+mutation Mutation($employeId: Int!, $dateFin: Date!, $dateDebut: Date!) {
+  addAbsence(employe_id: $employeId, date_fin: $dateFin, date_debut: $dateDebut)
+}
+`;

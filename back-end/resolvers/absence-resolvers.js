@@ -35,9 +35,9 @@ const absencesResolvers = {
             await database("absence").where("id", id).update("valide", absence[0].valide ? 0 : 1)
             return "Validation state have been updated successfully"
         },
-        addAbsence: async (parent, { employe_id, date_debut, date_fin }, context, info) => {
+        addAbsence: async (parent, { employe_id, date_debut, date_fin }, { user }, info) => {
             if (!user || user.id != employe_id) {
-                return null
+                throw new Error("User not authorized to perform this action.")
             }
             const absence = {
                 "employe_id": employe_id,
