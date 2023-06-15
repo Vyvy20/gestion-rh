@@ -1,10 +1,9 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { UserContext } from '../../page/Interface';
-import { GET_ME, UPDATE_EMPLOYE, UPDATE_PASSWORD } from '../../api/employeApi';
+import React, { useEffect, useState } from 'react';
+import { UPDATE_EMPLOYE, UPDATE_PASSWORD } from '../../api/employeApi';
 import { Alert, Box, Button, Grid, Snackbar, TextField, Typography } from '@mui/material';
-import { useMutation, useQuery } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 
-function PasswordForm({me}) {
+function PasswordForm({user}) {
     const [currentPassword, setCurrentPassword] = useState("")
     const [newPassword, setNewPassword] = useState("")
     const [updated, setUpdated] = useState(false)
@@ -25,7 +24,7 @@ function PasswordForm({me}) {
     });
 
     const handleConfirm = () => {
-        update({variables: {id: me.id, currentPassword: currentPassword, newPassword: newPassword}})
+        update({variables: {id: user.id, currentPassword: currentPassword, newPassword: newPassword}})
     }
 
     if (loading) {
@@ -64,18 +63,14 @@ function PasswordForm({me}) {
     )
 }
 
-export default function ProfilForm() {
-    const user = useContext(UserContext);
-    const [me, setMe] = useState(null);
+export default function ProfilForm({ user, refetch = () => {} }) {
     const [prenom, setPrenom] = useState("")
     const [nom, setNom] = useState("")
     const [email, setEmail] = useState("")
     const [telephone, setTelephone] = useState("")
     const [updated, setUpdated] = useState(false)
 
-    const { loading, error, data, refetch } = useQuery(GET_ME);
-
-    const [update, {loading2, error2}] = useMutation(UPDATE_EMPLOYE, {
+    const [update, { loading, error }] = useMutation(UPDATE_EMPLOYE, {
         onCompleted: (data) => {
             refetch()
             setUpdated(data.updateEmploye)
@@ -86,27 +81,20 @@ export default function ProfilForm() {
     });
 
     useEffect(() => {
-        if (data.getMe) {
-            setMe(data.getMe)
-            setPrenom(data.getMe.prenom)
-            setNom(data.getMe.nom)
-            setTelephone(data.getMe.telephone)
-            setEmail(data.getMe.email)
+        if (user) {
+            setNom(user.nom)
+            setPrenom(user.prenom)
+            setEmail(user.email)
+            setTelephone(user.telephone)
         }
-    }, [data.getMe])
-
-    console.log(me)
-
-    if(!user) {
-        return (<Typography>You are not connected</Typography>)
-    }
+    }, [user])
 
     if (loading) {
         return (<Typography>loading...</Typography>)
     }
 
     const handleUpdate = () => {
-        update({ variables: { id: me.id, email: email, prenom: prenom, nom: nom, telephone: telephone } },);
+        update({ variables: { id: user.id, email: email, prenom: prenom, nom: nom, telephone: telephone } });
     }
 
     return (
@@ -122,8 +110,8 @@ export default function ProfilForm() {
             {error && (
                 <Typography>{error.message}</Typography>
             )}
-            {!me && (<Typography>You are not connected</Typography>)}
-            {me && (
+            {!user && (<Typography>You are not connected</Typography>)}
+            {user && (
             <Box> 
             <Grid container>
                 <Grid item xs={4}>
@@ -139,22 +127,22 @@ export default function ProfilForm() {
                 <TextField label="Téléphone" variant="outlined" onChange={e => setTelephone(e.target.value)}  value={telephone}/>
                 </Grid>
                 <Grid item xs={4}>
-                <Typography label="poste" variant="outlined">Poste: {me.poste ? me.poste : "Non renseigné"}</Typography>
+                <Typography label="poste" variant="outlined">Poste: {user.poste ? user.poste : "Non renseigné"}</Typography>
                 </Grid>
                 <Grid item xs={4}>
-                <Typography label="Rôle" variant="outlined">Role: {me.role}</Typography>
+                <Typography label="Rôle" variant="outlined">Role: {user.role}</Typography>
                 </Grid>
                 <Grid item xs={4}>
-                <Typography label="Jours restant de congé" variant="outlined" >Jours restant: {me.joursRestant}</Typography>
+                <Typography label="Jours restant de congé" variant="outlined" >Jours restant: {user.joursRestant}</Typography>
                 </Grid>
                 <Grid item xs={4}>
-                <Button variant="outlined" onClick={handleUpdate}>{loading2 ? "En Cours" : "Update"}</Button>
-                {error2 && (
+                <Button variant="outlined" onClick={handleUpdate}>{loading ? "En Cours" : "Update"}</Button>
+                {error && (
                     <Typography color="red">Error while updating your profile.</Typography>
                 )}
                 </Grid>
             </Grid>
-            <PasswordForm me={me} />
+            <PasswordForm user={user} />
             </Box>
         )}
       </Box>

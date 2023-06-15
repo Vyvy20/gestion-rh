@@ -15,7 +15,17 @@ const absencesResolvers = {
                 return null
             }
             return await database.select().from('absence');
-        }
+        },
+        getUserAbsences: async (parent, { userId }, { user }, info) => {
+            const absences = await database.select().from("absence").where("employe_id", userId)
+
+            if (!user || (user.id != userId && user.role != "rh")) {
+                return null
+            }
+
+            console.log(absences)
+            return absences
+        },
     },
     Mutation: {
         validate: async (parent, { id }, context, info) => {

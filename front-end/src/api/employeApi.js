@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
-export const GET_ME = gql`
-query Query {
-    getMe {
+export const GET_EMPLOYE = gql`
+query Query ($employeId: Int!) {
+    getEmploye (id: $employeId) {
         id
         nom
         prenom

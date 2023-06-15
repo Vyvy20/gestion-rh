@@ -4,6 +4,7 @@ const absencesSchemas = `#graphql
     type Query {
         getAbsence(id: Int!): Absence
         getAbsences: [Absence]
+        getUserAbsences(userId: Int!): [Absence]
     }
 
     type Mutation {

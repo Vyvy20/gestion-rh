@@ -1,26 +1,21 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Box, Button, Typography, Table, TableBody, TableCell, TableContainer, TableRow, TableHead, Grid} from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { UserContext } from '../../page/Interface';
-import ProfilForm from './ProfilForm';
+import ProfilForm from './ProfilForm.js';
+import AbsencesForm from './AbsenceForm.js';
+import { useQuery } from '@apollo/client';
+import { GET_EMPLOYE } from '../../api/employeApi';
 
-//Fonction pour créer une donnée test
-function createData(startDateDonn, endDateDonn, status, action) {
-  return { startDateDonn, endDateDonn, status, action };
-}
 function createData2(paystub, action2) {
   return { paystub, action2};
 }
 
-//Créer une donnée test
-const rows = [
-  createData('12/05/2023', '19/05/2023', 'Congé payé', 'Validé', <Box><Button color='inherit' variant="outlined">Modifier</Button> <Button color='inherit' variant="outlined">Supprimer</Button></Box>),
-];
-
 function Profil() {
-  const user = useContext(UserContext);
+  const me = useContext(UserContext);
+  const [userId, setUserId] = useState(1)
   const fiche2 = new URL("../../images/Fiche_paie_janvier.jpg", import.meta.url)
   const [fiche, setFiche] = useState(new URL(fiche2, import.meta.url))
   const handleClick = () => {setFiche(new URL("http://localhost:3000/app/home", import.meta.url))}
@@ -28,40 +23,29 @@ function Profil() {
     createData2("fiche_paie_janvier_2023", <Box><Button color='inherit' variant="outlined" onClick={handleClick} href={fiche ? fiche2:!fiche2}>Voir</Button></Box>),
   ];
 
-  if (!user) {
+  const { loading, error, data, refetch } = useQuery(GET_EMPLOYE, {
+      variables: {
+        employeId: userId
+      }
+    });
+  
+  if (!me) {
     return (<Typography>Vous n'etes pas connecté.</Typography>)
+  }
+
+  if (loading) {
+    return (<Typography>loading...</Typography>)
+  }
+
+  if(error) {
+    return (<Typography>Error while fetching profile.</Typography>)
   }
 
   return(
         <Box>
-			<ProfilForm />
+			    <ProfilForm user={data.getEmploye} refetch={refetch}/>
+          <AbsencesForm userId={1} />
             <Box>
-                <Typography variant='h3'>Mes abscences</Typography>
-                <TableContainer>
-                  <Table>
-                    <TableHead>
-                      <TableRow>
-                        <TableCell align="left">Date de début</TableCell>
-                        <TableCell align="left">Date de fin</TableCell>
-                        <TableCell align="left">Statut</TableCell>
-                        <TableCell align="left">Action</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {rows.map((row) => (
-                        <TableRow
-                          key={row.startDateDonn}
-                          sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                        >
-                        <TableCell component="th" scope="row">{row.startDateDonn}</TableCell>
-                        <TableCell align="left">{row.endDateDonn}</TableCell>
-                        <TableCell align="left">{row.status}</TableCell>
-                        <TableCell align="left">{row.action}</TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
                 <Grid container>
                   <Grid item xs={3}>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>

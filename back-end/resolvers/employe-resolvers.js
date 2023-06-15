@@ -4,6 +4,7 @@ import sha256 from "js-sha256"
 const employesResolvers = {
     Query: {
         getEmploye: async (parent, { id }, { user }, info) => {
+            console.log(user)
             if (!user || (user.id != id && user.role != "rh")) {
                 return null
             }
