@@ -128,13 +128,18 @@ export default function Tableau() {
     { field: 'nom', headerName: 'Nom', width: 130 },
     { field: 'prenom', headerName: 'Prénom', width: 130 },
     { field: 'email', headerName: 'Email', width: 130 },
-    { field: 'telephone', headerName: 'Téléphone', width: 100 },
-    { field: 'poste', headerName: 'Poste', width: 50 },
+    { field: 'telephone', headerName: 'Téléphone', width: 150 },
+    { field: 'poste', headerName: 'Poste', width: 200 },
     {
       field: 'salaire',
       headerName: 'Salaire',
-      width: 70,
+      width: 80,
       valueFormatter: (params) => `${params.value} €`,
+    },
+    {
+      field: 'role',
+      headerName: 'role',
+      width: 75
     },
     { field: 'jours', headerName: 'Jours', width: 50 },
     { field: 'joursRestant', headerName: 'Jours Restant', width: 99 },
