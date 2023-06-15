@@ -24,3 +24,9 @@ mutation Mutation($employeId: Int!, $dateFin: Date!, $dateDebut: Date!) {
   addAbsence(employe_id: $employeId, date_fin: $dateFin, date_debut: $dateDebut)
 }
 `;
+
+export const DELETE_ABSENCE = gql`
+mutation Mutation($id: Int!) {
+  deleteAbsence(id: $id)
+}
+`;

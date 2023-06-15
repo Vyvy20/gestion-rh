@@ -10,6 +10,7 @@ const absencesSchemas = `#graphql
     type Mutation {
         addAbsence(employe_id: Int!, date_debut: Date!, date_fin: Date!): String
         validate(id: Int!): String
+        deleteAbsence(id: Int!): String
     }
 
     type Absence {

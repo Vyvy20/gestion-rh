@@ -5,14 +5,14 @@ const employesResolvers = {
     Query: {
         getEmploye: async (parent, { id }, { user }, info) => {
             if (!user || (user.id != id && user.role != "rh")) {
-                return null
+                throw new Error("User not authorized to perform this action.")
             }
             const result = await database.select().from("employe").where("id", id)
             return result[0]
         },
         getEmployes: async (parent, args, { user }, info) => {
             if (!user || user.role != "rh") {
-                return []
+                throw new Error("User not authorized to perform this action.")
             }
             return await database.select().from('employe');
         },
@@ -23,7 +23,7 @@ const employesResolvers = {
     Mutation: {
         addEmploye: async (parent, {prenom, nom, email, telephone, poste, salaire, password, jours}, { user }, info) => {
             if (!user || user.role != "rh") {
-                return null
+                throw new Error("User not authorized to perform this action.")
             }
             const emailRegex = new RegExp(/^[A-Za-z0-9_!#$%&'*+\/=?`{|}~^.-]+@[A-Za-z0-9.-]+$/, "gm");
             if (!emailRegex.test(email)) {
@@ -50,7 +50,7 @@ const employesResolvers = {
         },
         deleteEmploye: async (parent, {id}, { user }, info) => {
             if (!user || user.role != "rh") {
-                return null
+                throw new Error("User not authorized to perform this action.")
             }
             await database("employe").where("id", id).delete()
             console.log("Employé #" + id + " a bien été supprimé.")
@@ -58,7 +58,7 @@ const employesResolvers = {
         },
         deleteEmployes: async (parent, {ids}, { user }, info) => {
             if (!user || user.role != "rh") {
-                return null
+                throw new Error("User not authorized to perform this action.")
             }
             for (const id in ids) {
                 await database("employe").where("id", ids[id]).delete()
@@ -68,7 +68,7 @@ const employesResolvers = {
         },
         updateEmploye: async (parent, args, { user }, info) => {
             if (!user || (user.id != args.id && user.role != "rh")) {
-                return null
+                throw new Error("User not authorized to perform this action.")
             }
             const id = args.id
             delete args.id
@@ -77,7 +77,7 @@ const employesResolvers = {
         },
         changePassword: async (parent, {id, currentPassword, newPassword}, { user }, info) => {
             if (!user || (user.id != id && user.role != "rh")) {
-                return null
+                throw new Error("User not authorized to perform this action.")
             }
             const result = await database.select("password").from("employe").where("id", id)
             if (result[0].password === sha256(currentPassword)) {

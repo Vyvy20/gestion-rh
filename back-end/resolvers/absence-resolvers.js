@@ -6,13 +6,13 @@ const absencesResolvers = {
             const absence = await database.select().from("absence").where("id", id)
 
             if (!user || (user.id != absence[0].employe_id && user.role != "rh")) {
-                return null
+                throw new Error("User not authorized to perform this action.")
             }
             return absence[0]
         },
         getAbsences: async (parent, args, { user }, info) => {
             if (!user || user.role != "rh") {
-                return null
+                throw new Error("User not authorized to perform this action.")
             }
             return await database.select().from('absence');
         },
@@ -20,7 +20,7 @@ const absencesResolvers = {
             const absences = await database.select().from("absence").where("employe_id", userId)
 
             if (!user || (user.id != userId && user.role != "rh")) {
-                return null
+                throw new Error("User not authorized to perform this action.")
             }
 
             return absences
@@ -48,6 +48,13 @@ const absencesResolvers = {
 
             await database("absence").insert(absence);
             return "Absence Created"
+        },
+        deleteAbsence: async (parent, { id }, { user }, info) => {
+            if (!user || (user.id != id && user.role != "rh")) {
+                throw new Error("User not authorized to perform this action.")
+            }
+            await database("absence").where("id", id).delete()
+            return "Absence as been deleted"
         }
     }
 };
