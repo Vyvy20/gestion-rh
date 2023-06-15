@@ -70,10 +70,10 @@ function RhProfil() {
                     <TextField label="Adresse mail" variant="outlined" onChange={e => setEmail(e.target.value)}  value={email}/>
                   </Grid>
                   <Grid item xs={4}>
-                    <TextField label="Téléphone" variant="outlined" onChange={e => setTel(e.target.value)}  value={tel}></TextField>
+                    <TextField label="Téléphone" variant="outlined" onChange={e => setTel(e.target.value)}  value={tel}/>
                   </Grid>
                   <Grid item xs={4}>
-                    <TextField label="poste" variant="outlined" onChange={e => setJob(e.target.value)}  value={job}></TextField>
+                    <TextField label="poste" variant="outlined" onChange={e => setJob(e.target.value)}  value={job}/>
                   </Grid>
                   <Grid item xs={4}>
                     <TextField label="Rôle" variant="outlined" onChange={e => setRole(e.target.value)}  value={role}/>
