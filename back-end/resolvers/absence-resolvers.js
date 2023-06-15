@@ -23,7 +23,6 @@ const absencesResolvers = {
                 return null
             }
 
-            console.log(absences)
             return absences
         },
     },
