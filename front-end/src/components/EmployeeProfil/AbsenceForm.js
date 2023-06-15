@@ -1,8 +1,28 @@
 import React, { useContext } from "react";
-import { Box, Typography, TableContainer, Table, TableRow, TableHead, TableCell, TableBody, Button } from "@mui/material";
-import { useQuery } from "@apollo/client";
-import { GET_ABSENCE } from "../../api/absenceApi";
+import { Box, Typography, TableContainer, Table, TableRow, TableHead, TableCell, TableBody, Button, Snackbar, Alert } from "@mui/material";
+import { useMutation, useQuery } from "@apollo/client";
+import { GET_ABSENCE, VALIDATE_ABSENCE } from "../../api/absenceApi";
 import { UserContext } from "../../page/Interface";
+
+function ValidateAbsence({ absenceId, onClick }) {
+	const [validate, {loading, error }] = useMutation(VALIDATE_ABSENCE, { variables: { id: absenceId }})
+	const handleClick = () => {
+		validate()
+		onClick();
+	}
+
+	return (
+		<Box>
+			{error && (
+				<Snackbar open={error}>
+					<Alert severity="danger">{error.message}</Alert>
+				</Snackbar>
+			)}
+			<Button variant="outlined" onClick={handleClick}>{loading ? "loading..." : "Validate"}</Button>
+		</Box>
+
+	)
+}
 
 export default function AbsencesForm({userId}) {
     const me = useContext(UserContext)
@@ -15,8 +35,6 @@ export default function AbsencesForm({userId}) {
     if (error) {
         return (<Typography>{error.message}</Typography>)
     }
-
-    console.log(new Date(data.getUserAbsences[0].date_debut).toISOString())
 
     return (
         <Box>
@@ -46,7 +64,7 @@ export default function AbsencesForm({userId}) {
                     <TableCell align="left">{row.valide ? "Validé" : "Non Validé"}</TableCell>
                     {me.role === "rh" && (
                       <TableCell align="left">
-                        <Button variant="outlined" onClick={() => {}}>Valider</Button>
+                        <ValidateAbsence absenceId={row.id} onClick={refetch}/>
                       </TableCell>
                     )}
                   </TableRow>

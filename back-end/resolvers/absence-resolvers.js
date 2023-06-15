@@ -28,9 +28,9 @@ const absencesResolvers = {
         },
     },
     Mutation: {
-        validate: async (parent, { id }, context, info) => {
+        validate: async (parent, { id }, { user }, info) => {
             if (!user || user.role != "rh") {
-                return null
+                throw new Error("User not authorized to perform this action.")
             }
             const absence = await database.select().from("absence").where("id", id)
             await database("absence").where("id", id).update("valide", absence[0].valide ? 0 : 1)

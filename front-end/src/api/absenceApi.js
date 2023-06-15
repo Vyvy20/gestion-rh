@@ -12,3 +12,9 @@ query GetUserAbsences($userId: Int!) {
     }
   }
 `;
+
+export const VALIDATE_ABSENCE = gql`
+  mutation Mutation($id: Int!) {
+    validate(id: $id)
+  }
+`;
