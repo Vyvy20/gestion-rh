@@ -5,6 +5,7 @@ mutation Mutation($email: String!, $password: String!) {
   connect(email: $email, password: $password) {
     token
     role
+    id
   }
 }`;
 

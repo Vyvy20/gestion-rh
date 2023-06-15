@@ -7,6 +7,7 @@ const userSchemas = `#graphql
     type Token {
         token: String!
         role: String!
+        id: Int!
     }
 `;
 

@@ -11,6 +11,7 @@ const MAP_ROUTES = [
     children: [
       { index: true, element: <Navigate to="/app/home" /> },
       { path: 'home', element: <Home /> },
+      { path: 'home/:id', element: <Home /> },
       { path: 'rhHome', element: <RhHome /> },
     ],
   },

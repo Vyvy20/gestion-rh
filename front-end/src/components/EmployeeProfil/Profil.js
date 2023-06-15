@@ -13,9 +13,8 @@ function createData2(paystub, action2) {
   return { paystub, action2};
 }
 
-function Profil() {
+function Profil( { userId }) {
   const me = useContext(UserContext);
-  const [userId, setUserId] = useState(1)
   const fiche2 = new URL("../../images/Fiche_paie_janvier.jpg", import.meta.url)
   const [fiche, setFiche] = useState(new URL(fiche2, import.meta.url))
   const handleClick = () => {setFiche(new URL("http://localhost:3000/app/home", import.meta.url))}

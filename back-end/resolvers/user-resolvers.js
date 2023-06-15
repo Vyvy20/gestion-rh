@@ -24,7 +24,7 @@ const userResolvers = {
                     employe_id: result[0].id,
                     token: token
                 })
-                return { token: token, role: result[0].role }
+                return { token: token, role: result[0].role, id: result[0].id }
             }
             else {
                 return null
