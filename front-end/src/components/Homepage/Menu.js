@@ -17,9 +17,13 @@ import { UserContext } from '../../page/Interface.js';
 const logoEnt = new URL('../../images/Logo.png', import.meta.url);
 
 function Menu({ setUser }) {
-  const user = useContext(UserContext);
   const [email, setEmail] = useState('');
   const [pwd, setPwd] = useState('');
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [successSnackbarOpen, setSuccessSnackbarOpen] = useState(false);
+  const [disconnectSnackbarOpen, setDisconnectSnackbarOpen] = useState(false);
+  const user = useContext(UserContext);
+
   const [connect, { loading, error }] = useMutation(CONNECTION, {
     onCompleted: (data) => {
       setUser(data.connect);
@@ -39,10 +43,6 @@ function Menu({ setUser }) {
       setDisconnectSnackbarOpen(true);
     },
   });
-
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [successSnackbarOpen, setSuccessSnackbarOpen] = useState(false);
-  const [disconnectSnackbarOpen, setDisconnectSnackbarOpen] = useState(false);
 
   if (loading || loading2) {
     return <Typography>loading...</Typography>;
@@ -113,13 +113,21 @@ function Menu({ setUser }) {
               Bonjour Madame/Monsieur
             </Typography>
           )}
-          <Button
-            className="btnConnect"
-            color="inherit"
-            onClick={user ? handleDisconnect : handleConnect}
-          >
-            {user ? 'Déconnexion' : 'Connexion'}
-          </Button>
+          <Box sx={{ alignSelf: 'center' }}>
+            {user ? (
+              <>
+                <Button color="inherit">Button 2</Button>
+                <Button color="inherit">Button 3</Button>
+                <Button color="inherit" onClick={handleDisconnect}>
+                  Déconnexion
+                </Button>
+              </>
+            ) : (
+              <Button color="inherit" onClick={handleConnect}>
+                Connexion
+              </Button>
+            )}
+          </Box>
         </Toolbar>
       </AppBar>
       <Snackbar
