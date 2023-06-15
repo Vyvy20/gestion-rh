@@ -1,10 +1,10 @@
 import React from "react";
-import RhProfil from "../components/RhProfil/rhProfil"
+import RhManagement from "../components/RhProfil/RhManagement";
 
 function Home(props) {
     return (
         <div>
-            <RhProfil/>
+            <RhManagement/>
         </div>
     )
 }
