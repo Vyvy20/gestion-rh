@@ -1,4 +1,5 @@
 import { database } from "../database.js";
+import { joursRestant } from "../helpers/employeHelper.js";
 
 const absencesResolvers = {
     Query: {
@@ -39,11 +40,20 @@ const absencesResolvers = {
             if (!user || user.id != employe_id) {
                 throw new Error("User not authorized to perform this action.")
             }
+
+            const duree = 1 + ((date_fin - date_debut)/86400000)
+            
+            dureeRestant = await joursRestant(employe_id)
+
+            if(dureeRestant < duree) {
+                throw new Error("You don't have enough days left banked to take an other paid leave.")
+            }
+
             const absence = {
                 "employe_id": employe_id,
                 "date_debut": date_debut,
                 "date_fin": date_fin,
-                "duree": 1 + ((date_fin - date_debut)/86400000)
+                "duree": duree
             }
 
             await database("absence").insert(absence);
