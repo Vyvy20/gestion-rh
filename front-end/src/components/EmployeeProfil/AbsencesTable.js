@@ -22,11 +22,71 @@ import { UserContext } from '../../page/Interface';
 import AbsencesForm from './AbsencesForm';
 
 function DeleteAbsence({ absenceId, onClick }) {
-  // ...
+  const [deleteAbsence, { loading, error }] = useMutation(DELETE_ABSENCE, {
+    variables: { id: absenceId },
+  });
+
+  const [open, setOpen] = useState(false);
+
+  const handleClick = () => {
+    deleteAbsence();
+    setOpen(true);
+    onClick();
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false);
+  };
+
+  return (
+    <Box>
+      <Button variant="outlined" onClick={handleClick}>
+        {loading ? 'loading...' : 'Supprimer'}
+      </Button>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity={error ? 'error' : 'success'}>
+          {error ? error.message : 'Absence supprimée avec succès'}
+        </Alert>
+      </Snackbar>
+    </Box>
+  );
 }
 
 function ValidateAbsence({ absenceId, onClick }) {
-  // ...
+  const [validate, { loading, error }] = useMutation(VALIDATE_ABSENCE, {
+    variables: { id: absenceId },
+  });
+
+  const [open, setOpen] = useState(false);
+
+  const handleClick = () => {
+    validate();
+    setOpen(true);
+    onClick();
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false);
+  };
+
+  return (
+    <Box>
+      <Button variant="outlined" onClick={handleClick}>
+        {loading ? 'loading...' : 'Validate'}
+      </Button>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity={error ? 'error' : 'success'}>
+          {error ? error.message : 'Absence validée avec succès'}
+        </Alert>
+      </Snackbar>
+    </Box>
+  );
 }
 
 export default function AbsencesTable({ userId }) {
@@ -45,7 +105,7 @@ export default function AbsencesTable({ userId }) {
 
   return (
     <Box>
-      <Typography variant='h3'>Mes absences</Typography>
+      <Typography variant="h3">Mes absences</Typography>
       <TableContainer>
         <Table>
           <TableHead>
@@ -54,7 +114,7 @@ export default function AbsencesTable({ userId }) {
               <TableCell align="left">Date de fin</TableCell>
               <TableCell align="left">Duree</TableCell>
               <TableCell align="left">Statut</TableCell>
-              {me.role === "rh" && (
+              {me.role === 'rh' && (
                 <TableCell align="left">Validation</TableCell>
               )}
               <TableCell align="left">Supprimer</TableCell>
@@ -66,24 +126,32 @@ export default function AbsencesTable({ userId }) {
                 key={row.id}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
-                <TableCell component="th" scope="row">{new Date(data.getUserAbsences[index].date_debut).toISOString()}</TableCell>
-                <TableCell align="left">{new Date(data.getUserAbsences[index].date_fin).toISOString()}</TableCell>
+                <TableCell component="th" scope="row">
+                  {new Date(
+                    data.getUserAbsences[index].date_debut
+                  ).toISOString()}
+                </TableCell>
+                <TableCell align="left">
+                  {new Date(data.getUserAbsences[index].date_fin).toISOString()}
+                </TableCell>
                 <TableCell align="left">{row.duree}</TableCell>
-                <TableCell align="left">{row.valide ? "Validé" : "Non Validé"}</TableCell>
-                {me.role === "rh" && (
+                <TableCell align="left">
+                  {row.valide ? 'Validé' : 'Non Validé'}
+                </TableCell>
+                {me.role === 'rh' && (
                   <TableCell align="left">
-                    <ValidateAbsence absenceId={row.id} onClick={refetch}/>
+                    <ValidateAbsence absenceId={row.id} onClick={refetch} />
                   </TableCell>
                 )}
                 <TableCell align="left">
-                    <DeleteAbsence absenceId={row.id} onClick={refetch}/>
+                  <DeleteAbsence absenceId={row.id} onClick={refetch} />
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
-      <AbsencesForm userId={userId} refetch={refetch}/>
+      <AbsencesForm userId={userId} refetch={refetch} />
     </Box>
   );
 }
