@@ -91,10 +91,10 @@ const employesResolvers = {
         }
     },
     Employe: {
-        joursRestant: async (parent, { args }, context, info) => {
-            return await joursRestant(parent.id)
+        joursRestant: async (parent, args, context, info) => {
+            return await joursRestant(parent.jours, parent.id)
         },
-        joursPrit: async (parent, { args }, context, info) => {
+        joursPrit: async (parent, args, context, info) => {
             const results = await database.select("duree").from("absence").where("employe_id", parent.id)
             let duree = 0;
             results.forEach(result => {

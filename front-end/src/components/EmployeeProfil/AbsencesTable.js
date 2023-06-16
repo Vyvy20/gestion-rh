@@ -72,13 +72,13 @@ export default function AbsencesTable({userId}) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {data.getUserAbsences.map((row) => (
+                {data.getUserAbsences.map((row, index) => (
                   <TableRow
                     key={row.id}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                   >
-                    <TableCell component="th" scope="row">{new Date(data.getUserAbsences[0].date_debut).toISOString()}</TableCell>
-                    <TableCell align="left">{new Date(data.getUserAbsences[0].date_fin).toISOString()}</TableCell>
+                    <TableCell component="th" scope="row">{new Date(data.getUserAbsences[index].date_debut).toISOString()}</TableCell>
+                    <TableCell align="left">{new Date(data.getUserAbsences[index].date_fin).toISOString()}</TableCell>
                     <TableCell align="left">{row.duree}</TableCell>
                     <TableCell align="left">{row.valide ? "Validé" : "Non Validé"}</TableCell>
                     {me.role === "rh" && (
