@@ -22,71 +22,11 @@ import { UserContext } from '../../page/Interface';
 import AbsencesForm from './AbsencesForm';
 
 function DeleteAbsence({ absenceId, onClick }) {
-  const [deleteAbsence, { loading, error }] = useMutation(DELETE_ABSENCE, {
-    variables: { id: absenceId },
-  });
-
-  const [open, setOpen] = useState(false);
-
-  const handleClick = () => {
-    deleteAbsence();
-    setOpen(true);
-    onClick();
-  };
-
-  const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setOpen(false);
-  };
-
-  return (
-    <Box>
-      <Button variant="outlined" onClick={handleClick}>
-        {loading ? 'loading...' : 'Supprimer'}
-      </Button>
-      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity={error ? 'error' : 'success'}>
-          {error ? error.message : 'Absence supprimée avec succès'}
-        </Alert>
-      </Snackbar>
-    </Box>
-  );
+  // ...
 }
 
 function ValidateAbsence({ absenceId, onClick }) {
-  const [validate, { loading, error }] = useMutation(VALIDATE_ABSENCE, {
-    variables: { id: absenceId },
-  });
-
-  const [open, setOpen] = useState(false);
-
-  const handleClick = () => {
-    validate();
-    setOpen(true);
-    onClick();
-  };
-
-  const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setOpen(false);
-  };
-
-  return (
-    <Box>
-      <Button variant="outlined" onClick={handleClick}>
-        {loading ? 'loading...' : 'Validate'}
-      </Button>
-      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity={error ? 'error' : 'success'}>
-          {error ? error.message : 'Absence validée avec succès'}
-        </Alert>
-      </Snackbar>
-    </Box>
-  );
+  // ...
 }
 
 export default function AbsencesTable({ userId }) {
