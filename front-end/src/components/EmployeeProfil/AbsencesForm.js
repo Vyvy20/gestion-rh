@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Box, Button, Grid, Snackbar, Alert } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import { useMutation } from '@apollo/client';
 import { ADD_ABSENCE } from '../../api/absenceApi';
+import { UserContext } from '../../page/Interface';
 
 export default function AbsencesForm({ userId, refetch = () => {} }) {
+  const { role } = useContext(UserContext);
+
   const [dateDebut, setDateDebut] = useState(dayjs());
   const [dateFin, setDateFin] = useState(dayjs());
 
@@ -52,7 +55,11 @@ export default function AbsencesForm({ userId, refetch = () => {} }) {
           </LocalizationProvider>
         </Grid>
         <Grid item xs={12} sm={6}>
-          <Button variant="outlined" onClick={handleDemande} disabled={loading}>
+          <Button
+            variant="outlined"
+            onClick={handleDemande}
+            disabled={role === 'rh'}
+          >
             {loading ? 'Loading...' : "Demande d'absence"}
           </Button>
         </Grid>
