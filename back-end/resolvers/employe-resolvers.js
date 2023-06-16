@@ -1,6 +1,6 @@
 import { database } from "../database.js";
 import sha256 from "js-sha256"
-import { joursRestant } from "../helpers/employeHelper.js";
+import { joursRestant, testEmail } from "../helpers/employeHelper.js";
 
 const employesResolvers = {
     Query: {
@@ -26,16 +26,9 @@ const employesResolvers = {
             if (!user || user.role != "rh") {
                 throw new Error("User not authorized to perform this action.")
             }
-            const emailRegex = new RegExp(/^[A-Za-z0-9_!#$%&'*+\/=?`{|}~^.-]+@[A-Za-z0-9.-]+$/, "gm");
-            if (!emailRegex.test(email)) {
-                throw new Error("email format incorect");
-            }
 
-            const result = await database.select().from("employe").where("email", email)
-            if(result.length > 0) {
-                throw new Error("email already taken");
-            }
-
+            testEmail(email)
+            
             await database("employe").insert({
                 nom: nom,
                 prenom: prenom,
@@ -73,6 +66,9 @@ const employesResolvers = {
             }
             const id = args.id
             delete args.id
+
+            testEmail(args.email)
+
             await database("employe").where("id", id).update(args)
             return "Employe updated"
         },
