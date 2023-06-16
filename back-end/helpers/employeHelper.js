@@ -19,3 +19,10 @@ export async function testEmail(email) {
         throw new Error("email already taken");
     }
 }
+
+export async function testPassword(password) {
+    const passwordRegex = new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/, "gm");
+    if (!passwordRegex.test(password)) {
+        throw new Error("password format incorrect.");
+    }
+}

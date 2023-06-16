@@ -1,6 +1,6 @@
 import { database } from "../database.js";
 import sha256 from "js-sha256"
-import { joursRestant, testEmail } from "../helpers/employeHelper.js";
+import { joursRestant, testEmail, testPassword } from "../helpers/employeHelper.js";
 
 const employesResolvers = {
     Query: {
@@ -28,7 +28,8 @@ const employesResolvers = {
             }
 
             testEmail(email)
-            
+            testPassword(password)
+
             await database("employe").insert({
                 nom: nom,
                 prenom: prenom,
@@ -76,6 +77,9 @@ const employesResolvers = {
             if (!user || (user.id != id && user.role != "rh")) {
                 throw new Error("User not authorized to perform this action.")
             }
+
+            testPassword(newPassword)
+
             const result = await database.select("password").from("employe").where("id", id)
             if (result[0].password === sha256(currentPassword)) {
                 await database("employe").where("id", id).update("password", sha256(newPassword))
