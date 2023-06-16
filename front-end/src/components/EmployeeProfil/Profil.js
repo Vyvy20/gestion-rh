@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, Divider, Grid } from '@mui/material';
 import ProfilForm from './ProfilForm.js';
 import AbsencesTable from './AbsencesTable.js';
 import { useQuery } from '@apollo/client';
@@ -11,9 +11,9 @@ function Profil({ userId }) {
       employeId: userId,
     },
   });
-  console.log(data);
+
   if (loading) {
-    return <Typography>loading...</Typography>;
+    return <Typography>Loading...</Typography>;
   }
 
   if (error) {
@@ -21,9 +21,17 @@ function Profil({ userId }) {
   }
 
   return (
-    <Box>
-      <ProfilForm user={data.getEmploye} refetch={refetch} />
-      <AbsencesTable userId={userId} />
+    <Box sx={{ flexGrow: 1, m: 2 }}>
+      <Grid container spacing={3}>
+        <Grid item xs={12}>
+          <Divider />
+          <ProfilForm user={data.getEmploye} refetch={refetch} />
+        </Grid>
+        <Grid item xs={12}>
+          <Divider />
+          <AbsencesTable userId={userId} />
+        </Grid>
+      </Grid>
     </Box>
   );
 }
