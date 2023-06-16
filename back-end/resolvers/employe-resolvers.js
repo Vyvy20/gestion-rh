@@ -1,5 +1,6 @@
 import { database } from "../database.js";
 import sha256 from "js-sha256"
+import { joursRestant, testEmail, testPassword } from "../helpers/employeHelper.js";
 
 const employesResolvers = {
     Query: {
@@ -25,15 +26,9 @@ const employesResolvers = {
             if (!user || user.role != "rh") {
                 throw new Error("User not authorized to perform this action.")
             }
-            const emailRegex = new RegExp(/^[A-Za-z0-9_!#$%&'*+\/=?`{|}~^.-]+@[A-Za-z0-9.-]+$/, "gm");
-            if (!emailRegex.test(email)) {
-                throw new Error("email format incorect");
-            }
 
-            const result = await database.select().from("employe").where("email", email)
-            if(result.length > 0) {
-                throw new Error("email already taken");
-            }
+            testEmail(email)
+            testPassword(password)
 
             await database("employe").insert({
                 nom: nom,
@@ -72,6 +67,9 @@ const employesResolvers = {
             }
             const id = args.id
             delete args.id
+
+            testEmail(args.email)
+
             await database("employe").where("id", id).update(args)
             return "Employe updated"
         },
@@ -79,6 +77,9 @@ const employesResolvers = {
             if (!user || (user.id != id && user.role != "rh")) {
                 throw new Error("User not authorized to perform this action.")
             }
+
+            testPassword(newPassword)
+
             const result = await database.select("password").from("employe").where("id", id)
             if (result[0].password === sha256(currentPassword)) {
                 await database("employe").where("id", id).update("password", sha256(newPassword))
@@ -90,16 +91,10 @@ const employesResolvers = {
         }
     },
     Employe: {
-        joursRestant: async (parent, { args }, context, info) => {
-            const results = await database.select("duree").from("absence").where("employe_id", parent.id)
-            let duree = 0;
-            results.forEach(result => {
-                duree += result.duree
-            });
-
-            return parent.jours - duree
+        joursRestant: async (parent, args, context, info) => {
+            return await joursRestant(parent.jours, parent.id)
         },
-        joursPrit: async (parent, { args }, context, info) => {
+        joursPrit: async (parent, args, context, info) => {
             const results = await database.select("duree").from("absence").where("employe_id", parent.id)
             let duree = 0;
             results.forEach(result => {
