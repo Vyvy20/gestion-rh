@@ -1,9 +1,9 @@
 {
-    "database": {
-        "database": "rh",
-        "host": "127.0.0.1",
-        "port": "3306",
-        "username": "localhost",
-        "password": ""
-    }
+  "database": {
+    "database": "rh",
+    "host": "127.0.0.1",
+    "port": "3306",
+    "username": "root",
+    "password": ""
+  }
 }

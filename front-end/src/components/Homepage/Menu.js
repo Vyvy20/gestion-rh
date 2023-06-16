@@ -129,13 +129,10 @@ function Menu({ setUser }) {
                     </Button>
                     <Button color="inherit">Dashboard</Button>
                   </>
-                ) : (
-                  <>
-                    <Button color="inherit" onClick={handleDisconnect}>
-                      Déconnexion
-                    </Button>
-                  </>
-                )}
+                ) : null}
+                <Button color="error" onClick={handleDisconnect}>
+                  Déconnexion
+                </Button>
               </>
             ) : (
               <Button color="inherit" onClick={handleConnect}>
