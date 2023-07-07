@@ -62,8 +62,6 @@ RESOLVERS.Mutation = {
   ...userResolvers.Mutation
 }
 
-console.log(RESOLVERS)
-
 const server = new ApolloServer({
     typeDefs: SCHEMAS,
     resolvers: RESOLVERS
